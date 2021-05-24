@@ -1,20 +1,15 @@
 <template>
-  <router-view></router-view>
+  <main></main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue"
 
 export default defineComponent({
-  name: "App",
+  name: "Home",
   components: {},
 })
 </script>
 
-<style lang="scss">
-html,
-body {
-  width: 100vw;
-  height: 100vh;
-}
+<style lang="scss" scoped>
 </style>
