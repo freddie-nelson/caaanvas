@@ -1,23 +1,25 @@
 <template>
-  <main class="flex flex-col justify-center items-center w-full h-full bg-bg-light select-none">
+  <c-paint-canvas
+    fadeOut
+    useWindow
+    :brushSize="brushSize"
+    :brushColor="brushColor"
+    @paint="updateHue"
+    class="absolute w-full h-full"
+    style="top: 0; left: 0"
+  />
+
+  <main class="absolute flex flex-col justify-center items-center w-full h-full select-none">
     <c-gradient-heading>caaanvas.</c-gradient-heading>
-    <c-sub-heading>An infinite canvas to store all of your ideas and inspiration</c-sub-heading>
+    <c-sub-heading class="text-center"
+      >An infinite canvas to store all of your ideas and inspiration</c-sub-heading
+    >
 
     <div class="mt-7">
       <c-button-outline class="mr-12">Sign in</c-button-outline>
       <c-button>Get Started</c-button>
     </div>
   </main>
-
-  <section class="links absolute flex w-36 h-8 justify-between items-center flex-row-reverse">
-    <a
-      class="text-t-sub hover:text-t-main transition-colors duration-300"
-      href="https://github.com/freddie-nelson/caaanvas"
-      target="_blank"
-      rel="noopener"
-      ><icon class="h-8 w-8" :icon="icons.github"
-    /></a>
-  </section>
 
   <section class="watermark absolute flex w-auto h-auto justify-between items-center">
     <p class="text-t-sub font-medium">
@@ -36,19 +38,30 @@
       >
     </p>
   </section>
+
+  <section class="links absolute flex w-36 h-8 justify-between items-center flex-row-reverse">
+    <a
+      class="text-t-sub hover:text-t-main transition-colors duration-300"
+      href="https://github.com/freddie-nelson/caaanvas"
+      target="_blank"
+      rel="noopener"
+      ><icon class="h-8 w-8" :icon="icons.github"
+    /></a>
+  </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent, ref, computed } from "vue";
 
-import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue"
-import CSubHeading from "@/components/shared/Heading/CSubHeading.vue"
-import CButton from "@/components/shared/Button/CButton.vue"
-import CButtonOutline from "@/components/shared/Button/CButtonOutline.vue"
+import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
+import CSubHeading from "@/components/shared/Heading/CSubHeading.vue";
+import CButton from "@/components/shared/Button/CButton.vue";
+import CButtonOutline from "@/components/shared/Button/CButtonOutline.vue";
+import CPaintCanvas from "@/components/shared/PaintCanvas/CPaintCanvas.vue";
 
-import { Icon } from "@iconify/vue"
-import githubIcon from "@iconify-icons/feather/github"
-import heartIcon from "@iconify-icons/feather/heart"
+import { Icon } from "@iconify/vue";
+import githubIcon from "@iconify-icons/feather/github";
+import heartIcon from "@iconify-icons/feather/heart";
 
 export default defineComponent({
   name: "Home",
@@ -57,17 +70,30 @@ export default defineComponent({
     CSubHeading,
     CButton,
     CButtonOutline,
+    CPaintCanvas,
     Icon,
   },
   setup() {
+    const hue = ref(250);
+    let diff = 1;
+    const updateHue = () => {
+      hue.value += diff;
+      if (hue.value < 250 || hue.value > 340) diff *= -1;
+    };
+
+    const brushColor = computed(() => `hsl(${hue.value}, 83%, 58%)`);
+
     return {
       icons: {
         github: githubIcon,
         heart: heartIcon,
       },
-    }
+      brushColor,
+      updateHue,
+      brushSize: window.innerWidth / 25,
+    };
   },
-})
+});
 </script>
 
 <style lang="scss" scoped>
