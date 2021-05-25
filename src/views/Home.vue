@@ -15,8 +15,8 @@
 <script lang="ts">
 import { defineComponent } from "vue"
 
-import CGradientHeading from "@/components/shared/CGradientHeading.vue"
-import CSubHeading from "@/components/shared/CSubHeading.vue"
+import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue"
+import CSubHeading from "@/components/shared/Heading/CSubHeading.vue"
 import CButton from "@/components/shared/Button/CButton.vue"
 import CButtonOutline from "@/components/shared/Button/CButtonOutline.vue"
 
