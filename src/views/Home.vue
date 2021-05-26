@@ -9,14 +9,16 @@
     style="top: 0; left: 0"
   />
 
-  <main class="absolute flex flex-col justify-center items-center w-full h-full select-none">
+  <main
+    class="absolute flex flex-col justify-center items-center w-full h-full select-none overflow-x-hidden"
+  >
     <c-gradient-heading>caaanvas.</c-gradient-heading>
     <c-sub-heading class="text-center"
       >An infinite canvas to store all of your ideas and inspiration</c-sub-heading
     >
 
-    <div class="mt-7">
-      <c-button-outline class="mr-12">Sign in</c-button-outline>
+    <div class="mt-7 w-full flex justify-between" style="max-width: 21.5rem">
+      <c-button-outline class="mr-4">Sign in</c-button-outline>
       <c-button>Get Started</c-button>
     </div>
   </main>
