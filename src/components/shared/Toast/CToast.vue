@@ -34,11 +34,13 @@ export default defineComponent({
       default: "This is some example text.",
     },
   },
-  setup() {
+  setup(_, { emit }) {
     const toast = ref(document.createElement("div"));
 
     const hideToast = () => {
       toast.value.classList.add("exit");
+      emit("close");
+      setTimeout(() => emit("slide-out"), 600);
     };
 
     return {

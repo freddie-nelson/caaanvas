@@ -1,13 +1,18 @@
 <template>
+  <c-toast-controller />
   <router-view></router-view>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import CToastController from "@/components/shared/Toast/CToastController.vue";
+
 export default defineComponent({
   name: "App",
-  components: {},
+  components: {
+    CToastController,
+  },
 });
 </script>
 
