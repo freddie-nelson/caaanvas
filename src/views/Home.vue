@@ -92,7 +92,7 @@ export default defineComponent({
       },
       brushColor,
       updateHue,
-      brushSize: window.innerWidth / 25,
+      brushSize: Math.max(window.innerWidth / 30, 14),
     };
   },
 });

@@ -31,8 +31,8 @@ export default defineComponent({
     let ctx: CanvasRenderingContext2D | null = null;
 
     const isMouseDown = ref(false);
-    const mouseX = ref(0);
-    const mouseY = ref(0);
+    const mouseX = ref(-100);
+    const mouseY = ref(-100);
 
     watch(isMouseDown, () => {
       if (!isMouseDown.value) return;
@@ -48,6 +48,41 @@ export default defineComponent({
       emit("paint");
     };
 
+    const handleMouseDown = () => {
+      isMouseDown.value = true;
+      drawCircle();
+    };
+    const handleMouseUp = () => {
+      isMouseDown.value = false;
+    };
+    const handleMouseMove = (e: Event | Touch) => {
+      if (!canvas.value) return;
+
+      const event = <MouseEvent>e;
+      const box = canvas.value.getBoundingClientRect();
+      mouseX.value = event.clientX - box.left;
+      mouseY.value = event.clientY - box.top;
+
+      if (isMouseDown.value) {
+        drawCircle();
+      }
+    };
+
+    const handleTouchStart = (e: Event) => {
+      if (!canvas.value) return;
+
+      const tap = (e as TouchEvent).touches[0];
+      const box = canvas.value.getBoundingClientRect();
+      mouseX.value = tap.clientX - box.left;
+      mouseY.value = tap.clientY - box.top;
+
+      handleMouseDown();
+    };
+    const handleTouchMove = (e: Event) => {
+      const tap = (e as TouchEvent).touches[0];
+      handleMouseMove(tap);
+    };
+
     const setupCanvas = () => {
       canvas.value.width = canvas.value.clientWidth;
       canvas.value.height = canvas.value.clientHeight;
@@ -57,27 +92,18 @@ export default defineComponent({
 
       const element = props.useWindow ? window : canvas.value;
 
-      element.addEventListener("mousedown", () => {
-        isMouseDown.value = true;
-        drawCircle();
-      });
-      element.addEventListener("mouseup", () => {
-        isMouseDown.value = false;
-      });
+      // desktop
+      element.addEventListener("mousedown", handleMouseDown);
+      element.addEventListener("mouseup", handleMouseUp);
+      element.addEventListener("mousemove", handleMouseMove);
 
-      element.addEventListener("mousemove", (e) => {
-        const event = <MouseEvent>e;
-        const box = canvas.value.getBoundingClientRect();
-        mouseX.value = event.clientX - box.left;
-        mouseY.value = event.clientY - box.top;
-
-        if (isMouseDown.value) {
-          drawCircle();
-        }
-      });
+      // mobile
+      element.addEventListener("touchstart", handleTouchStart);
+      element.addEventListener("touchend", handleMouseUp);
+      element.addEventListener("touchmove", handleTouchMove);
 
       window.addEventListener("mousemove", (e) => {
-        if (!isMouseDown.value) return;
+        if (!isMouseDown.value || !canvas.value) return;
 
         const box = canvas.value.getBoundingClientRect();
         if (
@@ -93,9 +119,9 @@ export default defineComponent({
     const fadeOut = () => {
       ctx = <CanvasRenderingContext2D>ctx;
       ctx.fillStyle = "rgba(255, 255, 255, 0.17)";
-      ctx.fillRect(0, 0, canvas.value.width, canvas.value.height);
+      ctx.fillRect(0, 0, canvas.value?.width, canvas.value?.height);
 
-      if (canvas.value) setTimeout(fadeOut, 41);
+      if (canvas.value) setTimeout(fadeOut, 41); // 24 times per second
     };
 
     const resizeObserver = new ResizeObserver(() => {
@@ -115,6 +141,18 @@ export default defineComponent({
 
     onUnmounted(() => {
       resizeObserver.disconnect();
+
+      if (props.useWindow) {
+        // desktop
+        window.removeEventListener("mousedown", handleMouseDown);
+        window.removeEventListener("mouseup", handleMouseUp);
+        window.removeEventListener("mousemove", handleMouseMove);
+
+        // mobile
+        window.removeEventListener("touchstart", handleMouseUp);
+        window.removeEventListener("touchend", handleMouseDown);
+        window.removeEventListener("touchmove", handleTouchMove);
+      }
     });
 
     return { canvas };
