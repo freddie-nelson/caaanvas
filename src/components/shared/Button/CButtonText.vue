@@ -1,7 +1,6 @@
 <template>
   <button
     class="text-primary-500 font-medium text-base underline transition-colors duration-300 hover:text-accent-500 focus:text-accent-500 focus:outline-none"
-    @click="$emit('click', $event)"
   >
     <slot></slot>
   </button>
