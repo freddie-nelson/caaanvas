@@ -12,13 +12,15 @@
   <main
     class="absolute flex flex-col justify-center items-center w-full h-full select-none overflow-x-hidden"
   >
-    <c-gradient-heading>caaanvas.</c-gradient-heading>
+    <c-gradient-heading style="padding-bottom: 0">caaanvas.</c-gradient-heading>
     <c-sub-heading class="text-center"
       >An infinite canvas to store all of your ideas and inspiration</c-sub-heading
     >
 
     <div class="mt-7 w-full flex justify-between" style="max-width: 21.5rem">
-      <c-button-outline class="mr-4">Sign in</c-button-outline>
+      <c-button-outline class="mr-4" @click="$router.push({ name: 'Login' })"
+        >Sign in</c-button-outline
+      >
       <c-button>Get Started</c-button>
     </div>
   </main>

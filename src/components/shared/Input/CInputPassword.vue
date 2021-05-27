@@ -7,18 +7,15 @@
       v-model="value"
       :censor="censor"
     />
-    <button
-      class="self-end text-sm text-primary-500 font-medium underline mt-1.5 focus:outline-none transition-colors duration-300 hover:text-accent-500 focus:text-accent-500"
-      type="button"
-      @click="censor = !censor"
-    >
+    <c-button-text class="self-end" type="button" @click="censor = !censor">
       {{ censor ? "show characters" : "hide characters" }}
-    </button>
+    </c-button-text>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from "vue";
+import CButtonText from "../Button/CButtonText.vue";
 
 import CInputText from "./CInputText.vue";
 
@@ -26,6 +23,7 @@ export default defineComponent({
   name: "CInputPassword",
   components: {
     CInputText,
+    CButtonText,
   },
   props: {
     modelValue: {
