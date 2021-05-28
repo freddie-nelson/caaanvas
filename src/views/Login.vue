@@ -1,4 +1,7 @@
 <template>
+  <router-link class="absolute top-5 left-6 select-none" to="/">
+    <c-gradient-heading :size="3" noscale>caaanvas.</c-gradient-heading>
+  </router-link>
   <main class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col">
     <c-gradient-heading :size="6" noscale>Login</c-gradient-heading>
     <form class="max-w-xl w-full px-4 mt-6 flex flex-col" @submit.prevent>
