@@ -5,7 +5,7 @@
     style="width: 95%"
   >
     <p
-      class="text-bg-light text-sm font-semibold opacity-90 overflow-ellipsis overflow-hidden whitespace-nowrap"
+      class="text-bg-light text-sm font-semibold opacity-90 overflow-ellipsis overflow-hidden whitespace-nowrap font-mono"
     >
       {{ text }}
     </p>

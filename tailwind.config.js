@@ -7,6 +7,17 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Poppins", "Arial", "Segoe UI", "sans-serif"],
+        mono: [
+          "Roboto Mono",
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "Liberation Mono",
+          "Courier New",
+          "monospace",
+        ],
       },
     },
     colors: {
