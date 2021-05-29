@@ -1,19 +1,20 @@
 <template>
   <div
     ref="toast"
-    class="toast absolute top-3 right-0 left-0 z-40 mx-auto bg-bg-dark max-w-3xl w-full h-12 rounded-lg flex items-center justify-center"
+    class="toast absolute top-3 right-0 left-0 z-40 mx-auto bg-bg-dark max-w-3xl h-12 rounded-lg flex items-center justify-center px-11"
+    style="width: 95%"
   >
     <p
-      class="text-bg-light text-sm font-semibold opacity-90 overflow-ellipsis overflow-hidden whitespace-nowrap px-12"
+      class="text-bg-light text-sm font-semibold opacity-90 overflow-ellipsis overflow-hidden whitespace-nowrap"
     >
       {{ text }}
-      <button
-        class="w-7 h-7 text-bg-light absolute top-0 bottom-0 my-auto right-3 focus:outline-none focus:opacity-100 opacity-50 hover:opacity-100 cursor-pointer transition-opacity duration-200"
-        @click="hideToast"
-      >
-        <Icon :icon="icons.close" class="w-full h-full" />
-      </button>
     </p>
+    <button
+      class="absolute w-7 h-7 text-bg-light my-auto right-3 focus:outline-none focus:opacity-100 opacity-50 hover:opacity-100 cursor-pointer transition-opacity duration-200"
+      @click="hideToast"
+    >
+      <Icon :icon="icons.close" class="w-full h-full" />
+    </button>
   </div>
 </template>
 
