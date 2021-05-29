@@ -18,10 +18,10 @@
     >
 
     <div class="mt-7 w-full flex justify-between" style="max-width: 21.5rem">
-      <c-button-outline class="mr-4" @click="$router.push({ name: 'Login' })"
-        >Sign in</c-button-outline
-      >
-      <c-button>Get Started</c-button>
+      <c-button-outline class="mr-4" @click="$router.push({ name: 'Login' })">
+        Sign in
+      </c-button-outline>
+      <c-button @click="$router.push({ name: 'Canvas' })">Get Started</c-button>
     </div>
   </main>
 
@@ -55,7 +55,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
+import { defineComponent, ref, computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
 import CSubHeading from "@/components/shared/Heading/CSubHeading.vue";
@@ -86,6 +87,18 @@ export default defineComponent({
     };
 
     const brushColor = computed(() => `hsl(${hue.value}, 83%, 58%)`);
+
+    const store = useStore();
+
+    onMounted(() => {
+      setTimeout(
+        () =>
+          store.commit("ADD_TOAST", {
+            text: "👋 Welcome to caaanvas, we hope you enjoy your stay!",
+          }),
+        600,
+      );
+    });
 
     return {
       icons: {
