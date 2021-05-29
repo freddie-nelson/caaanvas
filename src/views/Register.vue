@@ -5,7 +5,14 @@
   <main class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col">
     <c-gradient-heading :size="6" noscale>Register</c-gradient-heading>
     <form class="max-w-xl w-full px-4 mt-6 flex flex-col" @submit.prevent>
-      <c-input-text name="email" placeholder="john@example.com" label="Email" v-model="email" />
+      <c-input-text name="username" placeholder="johnsmith17" label="Username" v-model="username" />
+      <c-input-text
+        class="mt-4"
+        name="email"
+        placeholder="john@example.com"
+        label="Email"
+        v-model="email"
+      />
       <c-input-password
         class="mt-4"
         name="password"
@@ -21,9 +28,9 @@
       />
 
       <c-button class="w-full mt-7">Create Account</c-button>
-      <router-link to="login" class="self-end mt-2"
-        ><c-button-text>Already have an account?</c-button-text></router-link
-      >
+      <c-button-text class="self-end mt-2" @click="$router.push({ name: 'Login' })">
+        Already have an account?
+      </c-button-text>
     </form>
   </main>
 </template>
@@ -47,11 +54,13 @@ export default defineComponent({
     CButtonText,
   },
   setup() {
+    const username = ref("");
     const email = ref("");
     const password = ref("");
     const confirmPassword = ref("");
 
     return {
+      username,
       email,
       password,
       confirmPassword,
