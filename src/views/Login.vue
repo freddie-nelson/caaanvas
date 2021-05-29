@@ -14,9 +14,9 @@
         v-model="password"
       />
       <c-button class="w-full mt-5">Sign In</c-button>
-      <router-link to="register" class="self-end mt-2"
-        ><c-button-text>Need an account?</c-button-text></router-link
-      >
+      <c-button-text class="self-end mt-2" @click="$router.push({ name: 'Register' })">
+        Already have an account?
+      </c-button-text>
     </form>
   </main>
 </template>
