@@ -3,7 +3,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref, reactive } from "vue";
+import { useMouse, Mouse } from "@/utils/useMouse";
 
 export default defineComponent({
   name: "CPaintCanvas",
@@ -30,58 +31,28 @@ export default defineComponent({
     const canvas = ref(document.createElement("canvas"));
     let ctx: CanvasRenderingContext2D | null = null;
 
-    const isMouseDown = ref(false);
-    const mouseX = ref(-100);
-    const mouseY = ref(-100);
-
-    watch(isMouseDown, () => {
-      if (!isMouseDown.value) return;
-    });
-
-    const drawCircle = () => {
+    const drawCircle = (e?: MouseEvent) => {
       ctx = <CanvasRenderingContext2D>ctx;
       ctx.beginPath();
-      ctx.arc(mouseX.value, mouseY.value, props.brushSize, 0, 2 * Math.PI, false);
+      ctx.arc(mouse.x, mouse.y, props.brushSize, 0, 2 * Math.PI, false);
       ctx.fillStyle = props.brushColor;
       ctx.fill();
 
       emit("paint");
     };
 
-    const handleMouseDown = () => {
-      isMouseDown.value = true;
-      drawCircle();
-    };
-    const handleMouseUp = () => {
-      isMouseDown.value = false;
-    };
-    const handleMouseMove = (e: Event | Touch) => {
-      if (!canvas.value) return;
+    let mouse = reactive<Mouse>({
+      pressed: false,
+      x: -100,
+      y: -100,
+      onMouseDown: drawCircle,
+      onMouseUp: null,
+      onMouseMove: (e?: MouseEvent) => {
+        if (mouse.pressed) drawCircle(e);
+      },
+    });
 
-      const event = <MouseEvent>e;
-      const box = canvas.value.getBoundingClientRect();
-      mouseX.value = event.clientX - box.left;
-      mouseY.value = event.clientY - box.top;
-
-      if (isMouseDown.value) {
-        drawCircle();
-      }
-    };
-
-    const handleTouchStart = (e: Event) => {
-      if (!canvas.value) return;
-
-      const tap = (e as TouchEvent).touches[0];
-      const box = canvas.value.getBoundingClientRect();
-      mouseX.value = tap.clientX - box.left;
-      mouseY.value = tap.clientY - box.top;
-
-      handleMouseDown();
-    };
-    const handleTouchMove = (e: Event) => {
-      const tap = (e as TouchEvent).touches[0];
-      handleMouseMove(tap);
-    };
+    let stopMouse = () => {};
 
     const setupCanvas = () => {
       canvas.value.width = canvas.value.clientWidth;
@@ -90,30 +61,10 @@ export default defineComponent({
       ctx = canvas.value.getContext("2d");
       if (!ctx) return;
 
-      const element = props.useWindow ? window : canvas.value;
+      const element = props.useWindow ? document.body : canvas.value;
 
-      // desktop
-      element.addEventListener("mousedown", handleMouseDown);
-      element.addEventListener("mouseup", handleMouseUp);
-      element.addEventListener("mousemove", handleMouseMove);
-
-      // mobile
-      element.addEventListener("touchstart", handleTouchStart);
-      element.addEventListener("touchend", handleMouseUp);
-      element.addEventListener("touchmove", handleTouchMove);
-
-      window.addEventListener("mousemove", (e) => {
-        if (!isMouseDown.value || !canvas.value) return;
-
-        const box = canvas.value.getBoundingClientRect();
-        if (
-          e.clientX < box.left ||
-          e.clientX > box.left + box.width ||
-          e.clientY < box.top ||
-          e.clientY > box.top + box.height
-        )
-          isMouseDown.value = false;
-      });
+      const temp = useMouse(element, mouse);
+      stopMouse = temp.stopMouse;
     };
 
     const fadeOut = () => {
@@ -143,15 +94,7 @@ export default defineComponent({
       resizeObserver.disconnect();
 
       if (props.useWindow) {
-        // desktop
-        window.removeEventListener("mousedown", handleMouseDown);
-        window.removeEventListener("mouseup", handleMouseUp);
-        window.removeEventListener("mousemove", handleMouseMove);
-
-        // mobile
-        window.removeEventListener("touchstart", handleMouseUp);
-        window.removeEventListener("touchend", handleMouseDown);
-        window.removeEventListener("touchmove", handleTouchMove);
+        stopMouse();
       }
     });
 
