@@ -1,10 +1,21 @@
 <template>
-  <div ref="renderer"></div>
+  <div
+    ref="renderer"
+    class="overflow-hidden relative"
+    :style="{ cursor: dragging ? 'grabbing' : null }"
+  >
+    <div
+      v-for="(object, i) in objects"
+      :key="i"
+      :style="{ transform: `translate(${object.x}px, ${object.y}px)` }"
+      class="absolute top-0 left-0 w-20 h-20 bg-bg-dark rounded-lg"
+    ></div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Mouse, useMouse } from "@/utils/useMouse";
-import { computed, defineComponent, onMounted, onUnmounted, reactive, ref } from "vue";
+import { computed, defineComponent, onMounted, reactive, ref, watchEffect } from "vue";
 
 export default defineComponent({
   name: "CRenderer",
@@ -12,14 +23,21 @@ export default defineComponent({
   setup() {
     const renderer = ref(document.createElement("div"));
 
+    const canDrag = ref(false);
+    const dragging = computed(() => mouse.pressed && canDrag.value);
+
     const mouse = reactive<Mouse>({
       pressed: false,
       x: 0,
       y: 0,
       lastX: 0,
       lastY: 0,
-      onMouseDown: null,
-      onMouseUp: null,
+      onMouseDown: (e?: MouseEvent) => {
+        if (e?.target === renderer.value) canDrag.value = true;
+      },
+      onMouseUp: (e?: MouseEvent) => {
+        canDrag.value = false;
+      },
       onMouseMove: null,
     });
     let stopMouse: () => void;
@@ -27,25 +45,33 @@ export default defineComponent({
     const diffX = computed(() => mouse.x - mouse.lastX);
     const diffY = computed(() => mouse.y - mouse.lastY);
 
-    const isSpaceHeld = ref(false);
-    const handleKeyDown = (e: KeyboardEvent) => (e.key === " " ? (isSpaceHeld.value = true) : null);
-    const handleKeyUp = (e: KeyboardEvent) => (e.key === " " ? (isSpaceHeld.value = false) : null);
-
     onMounted(() => {
       const temp = useMouse(renderer.value, mouse);
       stopMouse = temp.stopMouse;
-
-      window.addEventListener("keydown", handleKeyDown);
-      window.addEventListener("keyup", handleKeyUp);
     });
 
-    onUnmounted(() => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
+    const objects = reactive([
+      { x: 0, y: 0 },
+      { x: 100, y: 200 },
+      { x: -400, y: -500 },
+      { x: 1000, y: 1200 },
+      { x: 300, y: 750 },
+    ]);
+
+    watchEffect(() => {
+      if (dragging.value) {
+        objects.forEach((object) => {
+          object.x += diffX.value;
+          object.y += diffY.value;
+        });
+      }
     });
 
     return {
       renderer,
+      mouse,
+      dragging,
+      objects,
     };
   },
 });
