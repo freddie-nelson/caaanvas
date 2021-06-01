@@ -1,15 +1,16 @@
 <template>
-  <!-- canvas -->
-  <main class="w-full h-full bg-bg-light"></main>
+  <!-- renderer -->
+  <c-renderer class="w-full h-full bg-bg-light" />
 
   <!-- toolbar -->
-  <c-canvas-toolbar :tools="tools" />
+  <c-toolbar :tools="tools" />
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 
-import CCanvasToolbar from "@/components/app/CCanvasToolbar.vue";
+import CToolbar from "@/components/app/Canvas/CToolbar.vue";
+import CRenderer from "@/components/app/Canvas/CRenderer.vue";
 
 import textIcon from "@iconify-icons/feather/type";
 import linkIcon from "@iconify-icons/feather/link";
@@ -20,7 +21,8 @@ import checkpointIcon from "@iconify-icons/feather/flag";
 export default defineComponent({
   name: "Canvas",
   components: {
-    CCanvasToolbar,
+    CToolbar,
+    CRenderer,
   },
   setup() {
     const selectedTool = ref("text");
