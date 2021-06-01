@@ -45,6 +45,8 @@ export default defineComponent({
       pressed: false,
       x: -100,
       y: -100,
+      lastX: 0,
+      lastY: 0,
       onMouseDown: drawCircle,
       onMouseUp: null,
       onMouseMove: (e?: MouseEvent) => {

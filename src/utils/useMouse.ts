@@ -4,6 +4,8 @@ export interface Mouse {
   pressed: boolean;
   x: number;
   y: number;
+  lastX: number;
+  lastY: number;
   onMouseDown: null | ((e?: MouseEvent) => void);
   onMouseUp: null | ((e?: MouseEvent) => void);
   onMouseMove: null | ((e?: MouseEvent) => void);
@@ -15,6 +17,8 @@ export function useMouse(
     pressed: false,
     x: 0,
     y: 0,
+    lastX: 0,
+    lastY: 0,
     onMouseDown: null,
     onMouseUp: null,
     onMouseMove: null,
@@ -33,6 +37,10 @@ export function useMouse(
 
     const event = <MouseEvent>e;
     const box = element.getBoundingClientRect();
+
+    mouse.lastX = mouse.x;
+    mouse.lastY = mouse.y;
+
     mouse.x = event.clientX - box.left;
     mouse.y = event.clientY - box.top;
 
