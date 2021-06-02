@@ -50,20 +50,48 @@ export default defineComponent({
       stopMouse = temp.stopMouse;
     });
 
-    const objects = reactive([
-      { x: 0, y: 0 },
-      { x: 100, y: 200 },
-      { x: -400, y: -500 },
-      { x: 1000, y: 1200 },
-      { x: 300, y: 750 },
-    ]);
+    const allObjects: { x: number; y: number }[] = [];
+
+    for (let i = 0; i < 100; i++) {
+      allObjects.push({
+        x: Math.floor(Math.random() * 4000) - 2000,
+        y: Math.floor(Math.random() * 4000) - 2000,
+      });
+    }
+
+    let objects = reactive<{ x: number; y: number }[]>([]);
+
+    const findObjectsToRender = () => {
+      objects.length = 0;
+      allObjects.forEach((o) => {
+        if (
+          o.x > boundaries.left - 1000 &&
+          o.x < boundaries.right + 1000 &&
+          o.y > boundaries.top - 1000 &&
+          o.y < boundaries.bottom + 1000
+        ) {
+          objects.push({ x: o.x - boundaries.left, y: o.y - boundaries.top });
+        }
+      });
+    };
+
+    onMounted(() => findObjectsToRender());
+
+    const boundaries = reactive({
+      left: 0,
+      right: window.innerWidth,
+      top: 0,
+      bottom: window.innerHeight,
+    });
 
     watchEffect(() => {
       if (dragging.value) {
-        objects.forEach((object) => {
-          object.x += diffX.value;
-          object.y += diffY.value;
-        });
+        boundaries.left -= diffX.value;
+        boundaries.right = boundaries.left + window.innerWidth;
+        boundaries.top -= diffY.value;
+        boundaries.bottom = boundaries.top + window.innerHeight;
+
+        findObjectsToRender();
       }
     });
 
@@ -72,6 +100,7 @@ export default defineComponent({
       mouse,
       dragging,
       objects,
+      boundaries,
     };
   },
 });
