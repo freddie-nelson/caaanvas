@@ -8,11 +8,16 @@
       :key="tool.name"
       class="w-full h-12 my-2 bg-bg-dark flex justify-center items-center opacity-40 hover:opacity-90 transition-all duration-300 outline-none focus:outline-none"
       :class="
-        $store.state.canvas.selectedTool === tool.name
+        $store.state.canvas.selectedTool.name === tool.name
           ? 'text-accent-500 opacity-90'
           : 'focus:text-accent-300 focus:opacity-90'
       "
-      @click="handleClick($event, tool)"
+      @mousedown="
+        handleClick(tool);
+        $event.currentTarget.blur();
+      "
+      @keydown.enter.prevent="handleClick(tool)"
+      @click="$event.currentTarget.blur()"
     >
       <Icon class="w-6 h-6" :icon="tool.icon" />
     </button>
@@ -23,7 +28,7 @@
 import { defineComponent, ref } from "vue";
 
 import { Icon, IconifyIconData } from "@iconify/vue";
-import { useStore } from "@/store";
+import { Tool, useStore } from "@/store";
 
 export default defineComponent({
   name: "CCanvasToolbar",
@@ -32,20 +37,18 @@ export default defineComponent({
   },
   props: {
     tools: {
-      type: Array as () => { name: string; icon: string }[],
+      type: Array as () => Tool[],
       required: true,
     },
   },
   setup(props) {
     const store = useStore();
 
-    const handleClick = (e: MouseEvent, tool: { name: string; icon: IconifyIconData }) => {
-      (e.currentTarget as HTMLElement).blur();
-
-      if (store.state.canvas.selectedTool === tool.name) {
-        store.commit("SET_SELECTED_TOOL", "");
+    const handleClick = (tool: { name: string; icon: IconifyIconData }) => {
+      if (store.state.canvas.selectedTool.name === tool.name) {
+        store.commit("SET_SELECTED_TOOL", { name: "" });
       } else {
-        store.commit("SET_SELECTED_TOOL", tool.name);
+        store.commit("SET_SELECTED_TOOL", tool);
       }
     };
 

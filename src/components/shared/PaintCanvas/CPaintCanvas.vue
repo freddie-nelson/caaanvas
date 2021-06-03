@@ -48,7 +48,6 @@ export default defineComponent({
       lastX: 0,
       lastY: 0,
       onMouseDown: drawCircle,
-      onMouseUp: null,
       onMouseMove: (e?: MouseEvent) => {
         if (mouse.pressed) drawCircle(e);
       },

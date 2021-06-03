@@ -12,9 +12,14 @@ export interface Toast {
   duration?: number;
 }
 
+export interface Tool {
+  name: string;
+  icon?: IconifyIconData;
+}
+
 export interface Canvas {
-  selectedTool: string;
-  tools: { name: string; icon: IconifyIconData }[];
+  selectedTool: Tool;
+  tools: Tool[];
 }
 export interface State {
   toastQueue: Toast[];
@@ -25,7 +30,7 @@ const store = createStore<State>({
   state: {
     toastQueue: [],
     canvas: {
-      selectedTool: "text",
+      selectedTool: { name: "" },
       tools: [
         { name: "text", icon: textIcon },
         { name: "link", icon: linkIcon },
@@ -43,7 +48,7 @@ const store = createStore<State>({
       state.toastQueue.push(toast);
     },
 
-    SET_SELECTED_TOOL(state, tool: string) {
+    SET_SELECTED_TOOL(state, tool: Tool) {
       state.canvas.selectedTool = tool;
     },
   },

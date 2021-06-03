@@ -38,7 +38,6 @@ export default defineComponent({
       onMouseUp: (e?: MouseEvent) => {
         canDrag.value = false;
       },
-      onMouseMove: null,
     });
     let stopMouse: () => void;
 
@@ -52,12 +51,12 @@ export default defineComponent({
 
     const allObjects: { x: number; y: number }[] = [];
 
-    for (let i = 0; i < 100; i++) {
-      allObjects.push({
-        x: Math.floor(Math.random() * 4000) - 2000,
-        y: Math.floor(Math.random() * 4000) - 2000,
-      });
-    }
+    // for (let i = 0; i < 100; i++) {
+    //   allObjects.push({
+    //     x: Math.floor(Math.random() * 4000) - 2000,
+    //     y: Math.floor(Math.random() * 4000) - 2000,
+    //   });
+    // }
 
     let objects = reactive<{ x: number; y: number }[]>([]);
 

@@ -6,9 +6,9 @@ export interface Mouse {
   y: number;
   lastX: number;
   lastY: number;
-  onMouseDown: null | ((e?: MouseEvent) => void);
-  onMouseUp: null | ((e?: MouseEvent) => void);
-  onMouseMove: null | ((e?: MouseEvent) => void);
+  onMouseDown?: (e?: MouseEvent) => void;
+  onMouseUp?: (e?: MouseEvent) => void;
+  onMouseMove?: (e?: MouseEvent) => void;
 }
 
 export function useMouse(
@@ -19,18 +19,15 @@ export function useMouse(
     y: 0,
     lastX: 0,
     lastY: 0,
-    onMouseDown: null,
-    onMouseUp: null,
-    onMouseMove: null,
   }),
 ) {
   const handleMouseDown = (e: Event) => {
     mouse.pressed = true;
-    if (mouse.onMouseDown !== null) mouse.onMouseDown(<MouseEvent>e);
+    if (mouse.onMouseDown) mouse.onMouseDown(<MouseEvent>e);
   };
   const handleMouseUp = (e: Event) => {
     mouse.pressed = false;
-    if (mouse.onMouseUp !== null) mouse.onMouseUp(<MouseEvent>e);
+    if (mouse.onMouseUp) mouse.onMouseUp(<MouseEvent>e);
   };
   const handleMouseMove = (e: Event | Touch) => {
     if (!element) return;
@@ -44,7 +41,7 @@ export function useMouse(
     mouse.x = event.clientX - box.left;
     mouse.y = event.clientY - box.top;
 
-    if (mouse.onMouseMove !== null) mouse.onMouseMove(event);
+    if (mouse.onMouseMove) mouse.onMouseMove(event);
   };
 
   const handleTouchStart = (e: Event) => {
