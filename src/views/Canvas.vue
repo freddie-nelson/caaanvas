@@ -1,12 +1,6 @@
 <template>
   <c-renderer class="w-full h-full bg-bg-light" />
 
-  <c-toolbar
-    @mouseenter="showToolCursor = false"
-    @mouseleave="$store.state.canvas.selectedTool.name !== '' ? (showToolCursor = true) : null"
-    :tools="$store.state.canvas.tools"
-  />
-
   <transition name="fade">
     <div
       v-if="showToolCursor"
@@ -21,10 +15,16 @@
       </div>
     </div>
   </transition>
+
+  <c-toolbar
+    @mouseenter="showToolCursor = false"
+    @mouseleave="$store.state.canvas.selectedTool.name !== '' ? (showToolCursor = true) : null"
+    :tools="$store.state.canvas.tools"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, onMounted, watch, onUnmounted, reactive, ref } from "vue";
+import { defineComponent, ref, reactive, computed, watch, onMounted, onUnmounted } from "vue";
 import { useStore } from "@/store";
 import { Mouse, useMouse } from "@/utils/useMouse";
 
@@ -43,6 +43,30 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
+    // setup toolbar keybindings
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const index = Number(e.key) - 1;
+      if (index !== NaN && index >= 0 && index < store.state.canvas.tools.length) {
+        const tool = store.state.canvas.tools[index];
+        if (store.state.canvas.selectedTool.name === tool.name) {
+          store.commit("SET_SELECTED_TOOL", { name: "" });
+        } else {
+          store.commit("SET_SELECTED_TOOL", tool);
+        }
+
+        showToolCursor.value = true;
+      }
+    };
+
+    onMounted(() => {
+      document.body.addEventListener("keyup", handleKeyUp);
+    });
+
+    onUnmounted(() => {
+      document.body.removeEventListener("keyup", handleKeyUp);
+    });
+
+    // setup tool cursor
     const showToolCursor = ref(false);
     watch(
       computed(() => store.state.canvas.selectedTool),
