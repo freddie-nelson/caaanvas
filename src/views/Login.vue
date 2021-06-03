@@ -15,7 +15,7 @@
       />
       <c-button class="w-full mt-5">Sign In</c-button>
       <c-button-text class="self-end mt-2" @click="$router.push({ name: 'Register' })">
-        Already have an account?
+        Need an account?
       </c-button-text>
     </form>
   </main>
