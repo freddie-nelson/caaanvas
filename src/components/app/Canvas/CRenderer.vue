@@ -14,13 +14,16 @@
 </template>
 
 <script lang="ts">
+import { useStore } from "@/store";
 import { Mouse, useMouse } from "@/utils/useMouse";
-import { computed, defineComponent, onMounted, reactive, ref, watchEffect } from "vue";
+import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watchEffect } from "vue";
 
 export default defineComponent({
   name: "CRenderer",
   components: {},
   setup() {
+    const store = useStore();
+
     const renderer = ref(document.createElement("div"));
 
     const canDrag = ref(false);
@@ -34,6 +37,10 @@ export default defineComponent({
       lastY: 0,
       onMouseDown: (e?: MouseEvent) => {
         if (e?.target === renderer.value) canDrag.value = true;
+
+        if (store.state.canvas.selectedTool.name) {
+          store.commit("SET_SELECTED_TOOL", { name: "" });
+        }
       },
       onMouseUp: (e?: MouseEvent) => {
         canDrag.value = false;
@@ -49,14 +56,11 @@ export default defineComponent({
       stopMouse = temp.stopMouse;
     });
 
-    const allObjects: { x: number; y: number }[] = [];
+    onUnmounted(() => {
+      stopMouse();
+    });
 
-    // for (let i = 0; i < 100; i++) {
-    //   allObjects.push({
-    //     x: Math.floor(Math.random() * 4000) - 2000,
-    //     y: Math.floor(Math.random() * 4000) - 2000,
-    //   });
-    // }
+    const allObjects: { x: number; y: number }[] = [];
 
     let objects = reactive<{ x: number; y: number }[]>([]);
 

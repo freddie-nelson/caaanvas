@@ -41,7 +41,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup() {
     const store = useStore();
 
     const handleClick = (tool: { name: string; icon: IconifyIconData }) => {
