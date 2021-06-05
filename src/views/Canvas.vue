@@ -32,6 +32,7 @@ import CToolbar from "@/components/app/Canvas/CToolbar.vue";
 import CRenderer from "@/components/app/Canvas/CRenderer.vue";
 
 import { Icon } from "@iconify/vue";
+import useComponentEvent from "@/utils/useComponentEvent";
 
 export default defineComponent({
   name: "Canvas",
@@ -44,8 +45,8 @@ export default defineComponent({
     const store = useStore();
 
     // setup toolbar keybindings
-    const handleKeyUp = (e: KeyboardEvent) => {
-      const index = Number(e.key) - 1;
+    useComponentEvent(document.body, "keyup", (e) => {
+      const index = Number((e as KeyboardEvent).key) - 1;
       if (index !== NaN && index >= 0 && index < store.state.canvas.tools.length) {
         const tool = store.state.canvas.tools[index];
         if (store.state.canvas.selectedTool.name === tool.name) {
@@ -56,14 +57,6 @@ export default defineComponent({
 
         showToolCursor.value = true;
       }
-    };
-
-    onMounted(() => {
-      document.body.addEventListener("keyup", handleKeyUp);
-    });
-
-    onUnmounted(() => {
-      document.body.removeEventListener("keyup", handleKeyUp);
     });
 
     // setup tool cursor

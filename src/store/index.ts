@@ -12,18 +12,30 @@ export interface Toast {
   duration?: number;
 }
 
+export interface Component {
+  type: string;
+  x: number;
+  y: number;
+  data: any;
+}
+
+export interface Canvas {
+  title: string;
+  components: Component[];
+}
+
 export interface Tool {
   name: string;
   icon?: IconifyIconData;
 }
-
-export interface Canvas {
+export interface CanvasView {
   selectedTool: Tool;
   tools: Tool[];
+  current: Canvas;
 }
 export interface State {
   toastQueue: Toast[];
-  canvas: Canvas;
+  canvas: CanvasView;
 }
 
 const store = createStore<State>({
@@ -38,6 +50,10 @@ const store = createStore<State>({
         { name: "draw", icon: drawIcon },
         { name: "checkpoint", icon: checkpointIcon },
       ],
+      current: {
+        title: "Test",
+        components: [],
+      },
     },
   },
   mutations: {
@@ -50,6 +66,10 @@ const store = createStore<State>({
 
     SET_SELECTED_TOOL(state, tool: Tool) {
       state.canvas.selectedTool = tool;
+    },
+
+    ADD_COMPONENT(state, component: Component) {
+      state.canvas.current?.components.push(component);
     },
   },
   actions: {},

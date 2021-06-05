@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 
 import { Icon, IconifyIconData } from "@iconify/vue";
 import { Tool, useStore } from "@/store";
