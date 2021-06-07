@@ -29,6 +29,8 @@ export default defineComponent({
     const renderer = ref(document.createElement("div"));
 
     // handle panning around canvas
+
+    // panning with space + drag
     const spaceHeld = ref(false);
     useComponentEvent(
       document.body,
@@ -39,8 +41,37 @@ export default defineComponent({
       (e as KeyboardEvent).key === " " ? (spaceHeld.value = false) : null,
     );
 
-    const canDrag = computed(() => spaceHeld.value && !store.state.canvas.selectedTool.name);
-    const dragging = computed(() => mouse.pressed && canDrag.value);
+    // panning with scroll
+    useComponentEvent(document.body, "wheel", (event) => {
+      const e = <WheelEvent>event;
+
+      boundaries.left += e.deltaX / 2;
+      boundaries.top += e.deltaY / 2;
+    });
+
+    // panning with mouse wheel hold
+    const mouseWheelHeld = ref(false);
+    useComponentEvent(document.body, "mousedown", (event) => {
+      const e = <MouseEvent>event;
+
+      // mouse wheel pressed
+      if (e.button === 1) {
+        mouseWheelHeld.value = true;
+      }
+    });
+    useComponentEvent(document.body, "mouseup", (event) => {
+      const e = <MouseEvent>event;
+
+      // mouse wheel released
+      if (e.button === 1) {
+        mouseWheelHeld.value = false;
+      }
+    });
+
+    const canDrag = computed(
+      () => (spaceHeld.value || mouseWheelHeld.value) && !store.state.canvas.selectedTool.name,
+    );
+    const dragging = computed(() => (mouse.pressed || mouseWheelHeld.value) && canDrag.value);
 
     const mouse = reactive<Mouse>({
       pressed: false,
