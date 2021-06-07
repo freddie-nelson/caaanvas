@@ -1,4 +1,4 @@
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 
 export default function (
   element: HTMLElement,
@@ -7,5 +7,9 @@ export default function (
 ) {
   onMounted(() => {
     element.addEventListener(event, callback);
+  });
+
+  onUnmounted(() => {
+    element.removeEventListener(event, callback);
   });
 }
