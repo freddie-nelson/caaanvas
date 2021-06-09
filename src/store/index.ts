@@ -28,9 +28,16 @@ export interface Tool {
   name: string;
   icon?: IconifyIconData;
 }
+
+export interface Zoom {
+  scale: number;
+  factor: number;
+  level: number;
+}
 export interface CanvasView {
   selectedTool: Tool;
   tools: Tool[];
+  zoom: Zoom;
   current: Canvas;
 }
 export interface State {
@@ -50,6 +57,11 @@ const store = createStore<State>({
         { name: "draw", icon: drawIcon },
         { name: "checkpoint", icon: checkpointIcon },
       ],
+      zoom: {
+        scale: 1,
+        level: 100,
+        factor: 5,
+      },
       current: {
         title: "Test",
         components: [],
@@ -66,6 +78,11 @@ const store = createStore<State>({
 
     SET_SELECTED_TOOL(state, tool: Tool) {
       state.canvas.selectedTool = tool;
+    },
+
+    SET_ZOOM_SCALE(state, scale: number) {
+      state.canvas.zoom.scale = scale;
+      state.canvas.zoom.level = Math.round(scale * 100);
     },
 
     ADD_COMPONENT(state, component: Component) {

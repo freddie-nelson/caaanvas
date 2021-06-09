@@ -8,7 +8,7 @@
     <div
       v-for="(c, i) in visibleComponents"
       :key="i"
-      :style="{ transform: `scale(${zoomScale}) translate(${c.x}px, ${c.y}px)` }"
+      :style="{ transform: `scale(${zoom.scale}) translate(${c.x}px, ${c.y}px)` }"
       class="absolute top-0 left-0 w-20 h-20 bg-bg-dark rounded-lg"
     ></div>
   </div>
@@ -18,16 +18,7 @@
 import { Component, useStore } from "@/store";
 import { Mouse, useMouse } from "@/utils/useMouse";
 import useComponentEvent from "@/utils/useComponentEvent";
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-  watch,
-  watchEffect,
-} from "vue";
+import { computed, defineComponent, onMounted, onUnmounted, reactive, ref } from "vue";
 
 export default defineComponent({
   name: "CRenderer",
@@ -70,6 +61,7 @@ export default defineComponent({
     // handle panning around canvas
     // panning with scroll
     useComponentEvent(document.body, "wheel", (event) => {
+      if (controlHeld.value) return;
       const e = <WheelEvent>event;
 
       boundaries.left += e.deltaX / 2;
@@ -111,8 +103,8 @@ export default defineComponent({
       onMouseMove: (e) => {
         if (!e || !mouse.pressed || !canDrag.value) return;
 
-        const diffX = (mouse.lastX - mouse.x) / zoomScale.value;
-        const diffY = (mouse.lastY - mouse.y) / zoomScale.value;
+        const diffX = (mouse.lastX - mouse.x) / zoom.value.scale;
+        const diffY = (mouse.lastY - mouse.y) / zoom.value.scale;
 
         boundaries.left += diffX;
         boundaries.right += diffX;
@@ -139,9 +131,7 @@ export default defineComponent({
     });
 
     // handle zoom in/out with ctrl + mwheel
-    const zoomScale = ref(1);
-    const zoomX = window.innerWidth / 4;
-    const zoomY = window.innerHeight / 4;
+    const zoom = computed(() => store.state.canvas.zoom);
 
     useComponentEvent(
       document.body,
@@ -151,27 +141,35 @@ export default defineComponent({
         const e = <WheelEvent>event;
         e.preventDefault();
 
+        const zoomLeft = Math.floor(mouse.x / zoom.value.scale / zoom.value.factor);
+        const zoomRight = Math.floor(
+          (window.innerWidth - mouse.x) / zoom.value.scale / zoom.value.factor,
+        );
+
+        const zoomTop = Math.floor(mouse.y / zoom.value.scale / zoom.value.factor);
+        const zoomBottom = Math.floor(
+          (window.innerHeight - mouse.y) / zoom.value.scale / zoom.value.factor,
+        );
+
         if (e.deltaY > 0) {
-          if (zoomScale.value < 0.19) return;
+          if (zoom.value.scale < 0.1) return;
 
-          zoomScale.value -= 0.1;
+          boundaries.left -= zoomLeft;
+          boundaries.right += zoomRight;
 
-          boundaries.left -= zoomX / zoomScale.value;
-          boundaries.right += zoomX / zoomScale.value;
-
-          boundaries.top -= zoomY / zoomScale.value;
-          boundaries.bottom += zoomY / zoomScale.value;
+          boundaries.top -= zoomTop;
+          boundaries.bottom += zoomBottom;
         } else if (e.deltaY < 0) {
-          if (zoomScale.value > 0.91) return;
+          if (zoom.value.scale > 1) return;
 
-          boundaries.left += zoomX / zoomScale.value;
-          boundaries.right -= zoomX / zoomScale.value;
+          boundaries.left += zoomLeft;
+          boundaries.right -= zoomRight;
 
-          boundaries.top += zoomY / zoomScale.value;
-          boundaries.bottom -= zoomY / zoomScale.value;
-
-          zoomScale.value += 0.1;
+          boundaries.top += zoomTop;
+          boundaries.bottom -= zoomBottom;
         }
+
+        store.commit("SET_ZOOM_SCALE", window.innerWidth / (boundaries.right - boundaries.left));
       },
       { passive: false },
     );
@@ -204,8 +202,8 @@ export default defineComponent({
 
     const addNewComponent = (e: MouseEvent) => {
       if (store.state.canvas.selectedTool.name) {
-        const x = e.clientX / zoomScale.value + boundaries.left;
-        const y = e.clientY / zoomScale.value + boundaries.top;
+        const x = e.clientX / zoom.value.scale + boundaries.left;
+        const y = e.clientY / zoom.value.scale + boundaries.top;
 
         const component: Component = {
           x,
@@ -224,7 +222,7 @@ export default defineComponent({
       mouse,
       canDrag,
       boundaries,
-      zoomScale,
+      zoom,
       visibleComponents,
       addNewComponent,
     };
