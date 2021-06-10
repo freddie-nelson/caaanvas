@@ -12,14 +12,10 @@
       items-center
       p-4
       font-medium
-      text-sm
+      text-sm text-bg-light
     "
   >
-    <button
-      zoom-dropdown
-      class="text-bg-light flex items-center focus:outline-none"
-      @click="toggleZoomMenu"
-    >
+    <button zoom-dropdown class="flex items-center focus:outline-none" @click="toggleZoomMenu">
       <p class="pointer-events-none">{{ $store.state.canvas.zoom.level }}%</p>
 
       <Icon
@@ -34,7 +30,7 @@
       zoom-dropdown
       ui-element
       :style="{ right: `${zoomMenuRight + 3}px`, top: `${zoomMenuTop + 3}px` }"
-      class="absolute bg-t-main text-bg-light px-4 py-2.5 rounded-md"
+      class="absolute bg-t-main px-4 py-2.5 rounded-md"
     >
       <button
         v-for="i in 10"
@@ -60,10 +56,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import useComponentEvent from "@/utils/useComponentEvent";
 
 import { Icon } from "@iconify/vue";
 import chevronDownIcon from "@iconify-icons/feather/chevron-down";
-import useComponentEvent from "@/utils/useComponentEvent";
 
 export default defineComponent({
   name: "CZoomControls",

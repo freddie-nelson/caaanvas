@@ -89,7 +89,6 @@ export default defineComponent({
 
     onMounted(() => {
       uiElements = Array.from(document.querySelectorAll("[ui-element]"));
-      console.log(uiElements);
 
       uiElements.forEach((element) => {
         element.addEventListener("mouseover", handleMouseOver);

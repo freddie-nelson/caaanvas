@@ -141,15 +141,33 @@ export default defineComponent({
     const zoom = computed(() => store.state.canvas.zoom);
 
     const calculateZoomOffsets = (
+      scale: number,
+      direction: number,
       xPivot: number = mouse.x,
       yPivot: number = mouse.y,
-      factor: number = zoom.value.factor,
     ) => {
+      const currentDiffX = Math.abs(window.innerWidth - (boundaries.right - boundaries.left));
+      const currentDiffY = Math.abs(window.innerHeight - (boundaries.bottom - boundaries.top));
+
+      let desiredDiffX = window.innerWidth / scale - window.innerWidth;
+      let desiredDiffY = window.innerHeight / scale - window.innerHeight;
+
+      if (direction === 1) {
+        desiredDiffX -= currentDiffX;
+        desiredDiffY -= currentDiffY;
+      } else {
+        desiredDiffX = currentDiffX - desiredDiffX;
+        desiredDiffY = currentDiffY - desiredDiffY;
+      }
+
+      const left = desiredDiffX * (xPivot / window.innerWidth);
+      const top = desiredDiffY * (yPivot / window.innerHeight);
+
       return {
-        left: Math.floor(xPivot / factor),
-        right: Math.floor((window.innerWidth - xPivot) / factor),
-        top: Math.floor(yPivot / factor),
-        bottom: Math.floor((window.innerHeight - yPivot) / factor),
+        left: left,
+        right: desiredDiffX - left,
+        top: top,
+        bottom: desiredDiffY - top,
       };
     };
 
@@ -167,27 +185,58 @@ export default defineComponent({
       document.body,
       "wheel",
       (event) => {
-        if (!controlHeld.value) return;
         const e = <WheelEvent>event;
+        if (!controlHeld.value || e.deltaY === 0) return;
+
         e.preventDefault();
 
-        const zoomOffsets = calculateZoomOffsets();
-        let direction = 1;
+        const direction = e.deltaY > 0 ? 1 : -1;
+        const scale =
+          e.deltaY > 0
+            ? Math.max(zoom.value.scale - 0.1, 0.1)
+            : Math.min(zoom.value.scale + 0.1, 1);
 
-        if (e.deltaY > 0) {
-          if (zoom.value.scale < 0.1) return;
-        } else if (e.deltaY < 0) {
-          if (zoom.value.scale > 1) return;
+        if (scale === zoom.value.scale) return;
 
-          direction = -1;
-        }
-
+        const zoomOffsets = calculateZoomOffsets(scale, direction);
         zoomBoundaries(zoomOffsets, direction);
 
-        store.commit("SET_ZOOM_SCALE", window.innerWidth / (boundaries.right - boundaries.left));
+        store.commit("SET_ZOOM_SCALE", scale);
       },
       { passive: false },
     );
+
+    // handle zooming with ctrl + -/=
+    useComponentEvent(document.body, "keydown", (event) => {
+      if (!controlHeld.value) return;
+      const e = <KeyboardEvent>event;
+
+      let direction: number;
+      let scale: number;
+
+      switch (e.key) {
+        case "=":
+        case "+":
+          e.preventDefault();
+          direction = -1;
+          scale = Math.min(zoom.value.scale + 0.1, 1);
+          break;
+        case "-":
+          e.preventDefault();
+          direction = 1;
+          scale = Math.max(zoom.value.scale - 0.1, 0.1);
+          break;
+        default:
+          return;
+      }
+
+      if (scale === zoom.value.scale) return;
+
+      const zoomOffsets = calculateZoomOffsets(scale, direction);
+      zoomBoundaries(zoomOffsets, direction);
+
+      store.commit("SET_ZOOM_SCALE", scale);
+    });
 
     watch(zoom.value, (zoom) => {
       // when true update boundaries as scale and boundaries are out of sync
@@ -195,30 +244,12 @@ export default defineComponent({
       if (zoom.scale !== currentScale) {
         const direction = currentScale - zoom.scale < 0 ? -1 : 1;
 
-        const currentDiffX = Math.abs(
-          (window.innerWidth - (boundaries.right - boundaries.left)) / 2,
+        const zoomOffsets = calculateZoomOffsets(
+          zoom.scale,
+          direction,
+          window.innerWidth / 2,
+          window.innerHeight / 2,
         );
-        const currentDiffY = Math.abs(
-          (window.innerHeight - (boundaries.bottom - boundaries.top)) / 2,
-        );
-
-        let desiredDiffX = (window.innerWidth / zoom.scale - window.innerWidth) / 2;
-        let desiredDiffY = (window.innerHeight / zoom.scale - window.innerHeight) / 2;
-
-        if (direction === 1) {
-          desiredDiffX -= currentDiffX;
-          desiredDiffY -= currentDiffY;
-        } else {
-          desiredDiffX = currentDiffX - desiredDiffX;
-          desiredDiffY = currentDiffY - desiredDiffY;
-        }
-
-        const zoomOffsets = {
-          left: desiredDiffX,
-          right: desiredDiffX,
-          top: desiredDiffY,
-          bottom: desiredDiffY,
-        };
         zoomBoundaries(zoomOffsets, direction);
       }
     });
