@@ -16,11 +16,9 @@
     </div>
   </transition>
 
-  <c-toolbar
-    @mouseenter="showToolCursor = false"
-    @mouseleave="$store.state.canvas.selectedTool.name !== '' ? (showToolCursor = true) : null"
-    :tools="$store.state.canvas.tools"
-  />
+  <c-toolbar ui-element :tools="$store.state.canvas.tools" />
+
+  <c-zoom-controls ui-element />
 </template>
 
 <script lang="ts">
@@ -30,6 +28,7 @@ import { Mouse, useMouse } from "@/utils/useMouse";
 
 import CToolbar from "@/components/app/Canvas/CToolbar.vue";
 import CRenderer from "@/components/app/Canvas/CRenderer.vue";
+import CZoomControls from "@/components/app/Canvas/CZoomControls.vue";
 
 import { Icon } from "@iconify/vue";
 import useComponentEvent from "@/utils/useComponentEvent";
@@ -39,6 +38,7 @@ export default defineComponent({
   components: {
     CToolbar,
     CRenderer,
+    CZoomControls,
     Icon,
   },
   setup() {
@@ -73,6 +73,35 @@ export default defineComponent({
         document.body.style.cursor = "none";
       },
     );
+
+    // hide tool cursor when mouse enters elements tagged with ui-element
+    let uiElements: Element[] = [];
+    const handleMouseOver = () => {
+      showToolCursor.value = false;
+      document.body.style.cursor = "";
+    };
+    const handleMouseLeave = () => {
+      if (store.state.canvas.selectedTool.name !== "") {
+        showToolCursor.value = true;
+        document.body.style.cursor = "none";
+      }
+    };
+
+    onMounted(() => {
+      uiElements = Array.from(document.querySelectorAll("[ui-element]"));
+      console.log(uiElements);
+
+      uiElements.forEach((element) => {
+        element.addEventListener("mouseover", handleMouseOver);
+        element.addEventListener("mouseleave", handleMouseLeave);
+      });
+    });
+    onUnmounted(() => {
+      uiElements.forEach((element) => {
+        element.removeEventListener("mouseover", handleMouseOver);
+        element.removeEventListener("mouseleave", handleMouseLeave);
+      });
+    });
 
     const mouse = reactive<Mouse>({
       pressed: false,

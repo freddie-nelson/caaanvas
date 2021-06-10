@@ -194,7 +194,6 @@ export default defineComponent({
       const currentScale = window.innerWidth / (boundaries.right - boundaries.left);
       if (zoom.scale !== currentScale) {
         const direction = currentScale - zoom.scale < 0 ? -1 : 1;
-        console.log(direction);
 
         const currentDiffX = Math.abs(
           (window.innerWidth - (boundaries.right - boundaries.left)) / 2,
@@ -221,7 +220,6 @@ export default defineComponent({
           bottom: desiredDiffY,
         };
         zoomBoundaries(zoomOffsets, direction);
-        console.log(window.innerWidth / (boundaries.right - boundaries.left));
       }
     });
 
