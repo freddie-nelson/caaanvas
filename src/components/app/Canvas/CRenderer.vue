@@ -9,8 +9,14 @@
       v-for="(c, i) in visibleComponents"
       :key="i"
       :style="{ transform: `scale(${zoom.scale}) translate(${c.x}px, ${c.y}px)` }"
-      class="absolute top-0 left-0 w-20 h-20 bg-bg-dark rounded-lg"
-    ></div>
+      class="absolute top-0 left-0"
+    >
+      <c-tool-text v-if="c.type === 'text'" :data="c.data" />
+      <c-tool-link v-else-if="c.type === 'link'" :data="c.data" />
+      <c-tool-image v-else-if="c.type === 'image'" :data="c.data" />
+      <c-tool-draw v-else-if="c.type === 'draw'" :data="c.data" />
+      <c-tool-flag v-else-if="c.type === 'flag'" :data="c.data" />
+    </div>
   </div>
 </template>
 
@@ -20,9 +26,21 @@ import { Mouse, useMouse } from "@/utils/useMouse";
 import useComponentEvent from "@/utils/useComponentEvent";
 import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 
+import CToolText from "@/components/app/Canvas/toolComponents/CToolText.vue";
+import CToolLink from "@/components/app/Canvas/toolComponents/CToolLink.vue";
+import CToolImage from "@/components/app/Canvas/toolComponents/CToolImage.vue";
+import CToolDraw from "@/components/app/Canvas/toolComponents/CToolDraw.vue";
+import CToolFlag from "@/components/app/Canvas/toolComponents/CToolFlag.vue";
+
 export default defineComponent({
   name: "CRenderer",
-  components: {},
+  components: {
+    CToolText,
+    CToolLink,
+    CToolImage,
+    CToolDraw,
+    CToolFlag,
+  },
   setup() {
     const store = useStore();
 

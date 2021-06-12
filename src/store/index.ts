@@ -4,7 +4,7 @@ import textIcon from "@iconify-icons/feather/type";
 import linkIcon from "@iconify-icons/feather/link";
 import imageIcon from "@iconify-icons/feather/image";
 import drawIcon from "@iconify-icons/feather/edit-2";
-import checkpointIcon from "@iconify-icons/feather/flag";
+import flagIcon from "@iconify-icons/feather/flag";
 import { IconifyIconData } from "@iconify/vue";
 
 export interface Toast {
@@ -55,7 +55,7 @@ const store = createStore<State>({
         { name: "link", icon: linkIcon },
         { name: "image", icon: imageIcon },
         { name: "draw", icon: drawIcon },
-        { name: "checkpoint", icon: checkpointIcon },
+        { name: "flag", icon: flagIcon },
       ],
       zoom: {
         scale: 1,
