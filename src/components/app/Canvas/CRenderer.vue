@@ -10,8 +10,13 @@
       :key="i"
       :style="{ transform: `scale(${zoom.scale}) translate(${c.x}px, ${c.y}px)` }"
       class="absolute top-0 left-0"
+      @click="$emit('component-clicked', { target: $event.currentTarget, c })"
     >
-      <c-tool-text v-if="c.type === 'text'" :data="c.data" />
+      <c-tool-text
+        v-if="c.type === 'text'"
+        :data="c.data"
+        @update-data-key="c.data[$event.key] = $event.value"
+      />
       <c-tool-link v-else-if="c.type === 'link'" :data="c.data" />
       <c-tool-image v-else-if="c.type === 'image'" :data="c.data" />
       <c-tool-draw v-else-if="c.type === 'draw'" :data="c.data" />
@@ -41,7 +46,7 @@ export default defineComponent({
     CToolDraw,
     CToolFlag,
   },
-  setup() {
+  setup(_, { emit }) {
     const store = useStore();
 
     const renderer = ref(document.createElement("div"));
@@ -148,12 +153,9 @@ export default defineComponent({
       bottom: window.innerHeight,
     });
 
-    const resetBoundaries = () => {
-      boundaries.left = 0;
-      boundaries.right = window.innerWidth;
-      boundaries.top = 0;
-      boundaries.bottom = window.innerHeight;
-    };
+    watch(boundaries, () => {
+      emit("view-changed", boundaries);
+    });
 
     // handle zoom in/out with ctrl + mwheel
     const zoom = computed(() => store.state.canvas.zoom);
