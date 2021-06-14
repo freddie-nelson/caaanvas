@@ -5,8 +5,6 @@
     :style="{ cursor: canDrag ? 'grabbing' : null }"
     @click="addNewComponent"
   >
-    <c-options-menu :show="showOptions" :target="optionsTarget" />
-
     <div
       v-for="(c, i) in visibleComponents"
       :key="i"
@@ -24,6 +22,8 @@
       <c-tool-draw v-else-if="c.type === 'draw'" :data="c.data" />
       <c-tool-flag v-else-if="c.type === 'flag'" :data="c.data" />
     </div>
+
+    <c-options-menu :show="showOptions" :target="optionsTarget" />
   </div>
 </template>
 
