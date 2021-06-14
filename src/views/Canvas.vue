@@ -1,9 +1,5 @@
 <template>
-  <c-renderer
-    class="w-full h-full bg-bg-light"
-    @view-changed="isOptionsVisible = false"
-    @component-clicked="showOptions"
-  />
+  <c-renderer class="w-full h-full bg-bg-light" />
 
   <transition name="fade">
     <div
@@ -20,31 +16,13 @@
     </div>
   </transition>
 
-  <div
-    v-show="isOptionsVisible"
-    ref="options"
-    class="absolute top-0 left-0 w-52 h-12 bg-bg-dark rounded-md"
-    :style="{
-      transform: `scale(${$store.state.canvas.zoom.scale}) translate(${optionsPos.x}px, ${optionsPos.y}px)`,
-    }"
-  ></div>
-
   <c-toolbar ui-element :tools="$store.state.canvas.tools" />
 
   <c-zoom-controls ui-element />
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  reactive,
-  computed,
-  watch,
-  onMounted,
-  onUnmounted,
-  Component,
-} from "vue";
+import { defineComponent, ref, reactive, computed, watch, onMounted, onUnmounted } from "vue";
 import { useStore } from "@/store";
 import { Mouse, useMouse } from "@/utils/useMouse";
 
@@ -146,41 +124,9 @@ export default defineComponent({
       document.body.style.overflow = "";
     });
 
-    const options = ref(document.createElement("div"));
-    const isOptionsVisible = ref(false);
-    let optionsTarget: Element;
-    const optionsPos = reactive({
-      x: 0,
-      y: 0,
-    });
-
-    const showOptions = (e: { target: Element; c: Component }) => {
-      isOptionsVisible.value = true;
-      optionsTarget = e.target;
-
-      const box = e.target.getBoundingClientRect();
-      optionsPos.x = box.x;
-      optionsPos.y = box.y + box.height + 7;
-    };
-    useComponentEvent(document.body, "click", (event) => {
-      if (!optionsTarget) return;
-      const e = <MouseEvent>event;
-
-      const containsTarget =
-        optionsTarget.compareDocumentPosition(e.target as Node) &
-        Node.DOCUMENT_POSITION_CONTAINED_BY;
-
-      if (e.target !== optionsTarget && e.target !== options.value && !containsTarget)
-        isOptionsVisible.value = false;
-    });
-
     return {
       mouse,
       showToolCursor,
-      options,
-      isOptionsVisible,
-      optionsPos,
-      showOptions,
     };
   },
 });

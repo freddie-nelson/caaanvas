@@ -1,7 +1,7 @@
 <template>
   <div
     v-show="isOptionsVisible"
-    ref="options"
+    ref="optionsElement"
     class="absolute top-0 left-0 w-52 h-12 bg-bg-dark rounded-md"
     :style="{
       transform: `scale(${$store.state.canvas.zoom.scale}) translate(${optionsPos.x}px, ${optionsPos.y}px)`,
@@ -13,12 +13,10 @@
 import useComponentEvent from "@/utils/useComponentEvent";
 import { defineComponent, ref, reactive, computed, watch } from "vue";
 
-import { Component } from "@/store";
-
-interface eventObj {
-  target: Element;
-  c: Component;
-}
+import moveIcon from "@iconify-icons/feather/move";
+import openIcon from "@iconify-icons/feather/edit-2";
+import deleteIcon from "@iconify-icons/feather/trash";
+import { useStore } from "@/store";
 
 export default defineComponent({
   name: "COptionsMenu",
@@ -28,12 +26,14 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    info: {
-      type: Object as () => eventObj,
+    target: {
+      type: Object as () => Element,
     },
   },
   setup(props) {
-    const options = ref(document.createElement("div"));
+    const store = useStore();
+
+    const optionsElement = ref(document.createElement("div"));
     const isOptionsVisible = ref(false);
     let optionsTarget: Element;
     const optionsPos = reactive({
@@ -41,19 +41,28 @@ export default defineComponent({
       y: 0,
     });
 
-    const showOptions = (e: eventObj) => {
-      isOptionsVisible.value = true;
-      optionsTarget = e.target;
+    const observer = new MutationObserver((entries) => {
+      const box = (entries[0].target as Element).getBoundingClientRect();
+      optionsPos.x = box.x / store.state.canvas.zoom.scale;
+      optionsPos.y = (box.y + box.height) / store.state.canvas.zoom.scale + 7;
+    });
 
-      const box = e.target.getBoundingClientRect();
-      optionsPos.x = box.x;
-      optionsPos.y = box.y + box.height + 7;
+    const showOptions = (target: Element) => {
+      observer.disconnect();
+
+      isOptionsVisible.value = true;
+      optionsTarget = target;
+      observer.observe(target, { attributes: true });
+
+      const box = target.getBoundingClientRect();
+      optionsPos.x = box.x / store.state.canvas.zoom.scale;
+      optionsPos.y = (box.y + box.height) / store.state.canvas.zoom.scale + 7;
     };
 
     watch(
       computed(() => props.show),
       () => {
-        if (props.info) showOptions(props.info);
+        if (props.target) showOptions(props.target);
       },
     );
 
@@ -65,15 +74,21 @@ export default defineComponent({
         optionsTarget.compareDocumentPosition(e.target as Node) &
         Node.DOCUMENT_POSITION_CONTAINED_BY;
 
-      if (e.target !== optionsTarget && e.target !== options.value && !containsTarget)
+      if (e.target !== optionsTarget && e.target !== optionsElement.value && !containsTarget)
         isOptionsVisible.value = false;
     });
 
     return {
-      options,
+      optionsElement,
       isOptionsVisible,
       optionsPos,
       showOptions,
+
+      icons: {
+        move: moveIcon,
+        open: openIcon,
+        delete: deleteIcon,
+      },
     };
   },
 });

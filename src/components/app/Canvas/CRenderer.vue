@@ -5,12 +5,14 @@
     :style="{ cursor: canDrag ? 'grabbing' : null }"
     @click="addNewComponent"
   >
+    <c-options-menu :show="showOptions" :target="optionsTarget" />
+
     <div
       v-for="(c, i) in visibleComponents"
       :key="i"
       :style="{ transform: `scale(${zoom.scale}) translate(${c.x}px, ${c.y}px)` }"
       class="absolute top-0 left-0"
-      @click="$emit('component-clicked', { target: $event.currentTarget, c })"
+      @click="handleComponentClick($event.currentTarget, i)"
     >
       <c-tool-text
         v-if="c.type === 'text'"
@@ -31,6 +33,7 @@ import { Mouse, useMouse } from "@/utils/useMouse";
 import useComponentEvent from "@/utils/useComponentEvent";
 import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 
+import COptionsMenu from "@/components/app/Canvas/COptionsMenu.vue";
 import CToolText from "@/components/app/Canvas/toolComponents/CToolText.vue";
 import CToolLink from "@/components/app/Canvas/toolComponents/CToolLink.vue";
 import CToolImage from "@/components/app/Canvas/toolComponents/CToolImage.vue";
@@ -40,6 +43,7 @@ import CToolFlag from "@/components/app/Canvas/toolComponents/CToolFlag.vue";
 export default defineComponent({
   name: "CRenderer",
   components: {
+    COptionsMenu,
     CToolText,
     CToolLink,
     CToolImage,
@@ -317,6 +321,14 @@ export default defineComponent({
       }
     };
 
+    const showOptions = ref(false);
+    const optionsTarget = ref<Element>();
+
+    const handleComponentClick = (target: Element) => {
+      showOptions.value = !showOptions.value;
+      optionsTarget.value = target;
+    };
+
     return {
       renderer,
       mouse,
@@ -325,6 +337,9 @@ export default defineComponent({
       zoom,
       visibleComponents,
       addNewComponent,
+      showOptions,
+      optionsTarget,
+      handleComponentClick,
     };
   },
 });

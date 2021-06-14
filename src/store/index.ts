@@ -34,6 +34,7 @@ export interface Zoom {
   factor: number;
   level: number;
 }
+
 export interface CanvasView {
   selectedTool: Tool;
   tools: Tool[];
