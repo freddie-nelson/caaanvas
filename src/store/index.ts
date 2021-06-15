@@ -90,6 +90,9 @@ const store = createStore<State>({
     ADD_COMPONENT(state, component: Component) {
       state.canvas.current?.components.push(component);
     },
+    REMOVE_COMPONENT(state, index: number) {
+      state.canvas.current.components.splice(index, 1);
+    },
     SET_COMPONENT_POSITION(state, data: { index: number; x: number; y: number }) {
       state.canvas.current.components[data.index].x = data.x;
       state.canvas.current.components[data.index].y = data.y;

@@ -1,5 +1,6 @@
 <template>
   <div
+    ui-element
     v-show="isOptionsVisible"
     ref="optionsElement"
     class="absolute top-0 left-0 bg-bg-dark rounded-md text-bg-light"
@@ -56,6 +57,7 @@
         focus:text-accent-500
         focus:opacity-100
       "
+      @click="$emit('delete')"
     >
       <Icon class="w-full h-full" :icon="icons.delete" />
     </button>
@@ -119,6 +121,7 @@ export default defineComponent({
       computed(() => props.show),
       () => {
         if (props.target) showOptions(props.target);
+        else isOptionsVisible.value = false;
       },
     );
 

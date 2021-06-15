@@ -28,6 +28,7 @@
       :target="optionsTarget"
       @start-move="canMoveSelectedComponent = true"
       @end-move="canMoveSelectedComponent = false"
+      @delete="deleteSelectedComponent"
     />
   </div>
 </template>
@@ -36,16 +37,7 @@
 import { Component, useStore } from "@/store";
 import { Mouse, useMouse } from "@/utils/useMouse";
 import useComponentEvent from "@/utils/useComponentEvent";
-import {
-  computed,
-  defineComponent,
-  nextTick,
-  onMounted,
-  onUnmounted,
-  reactive,
-  ref,
-  watch,
-} from "vue";
+import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
 
 import COptionsMenu from "@/components/app/Canvas/COptionsMenu.vue";
 import CToolText from "@/components/app/Canvas/toolComponents/CToolText.vue";
@@ -370,6 +362,15 @@ export default defineComponent({
       store.commit("SET_COMPONENT_POSITION", { index: selectedComponent.index, x: newX, y: newY });
     });
 
+    // delete selected component
+    const deleteSelectedComponent = () => {
+      if (!selectedComponent || selectedComponent.index === undefined) return;
+
+      showOptions.value = !showOptions.value;
+      optionsTarget.value = undefined;
+      store.commit("REMOVE_COMPONENT", selectedComponent.index);
+    };
+
     return {
       renderer,
       mouse,
@@ -383,6 +384,7 @@ export default defineComponent({
       handleComponentClick,
       selectedComponent,
       canMoveSelectedComponent,
+      deleteSelectedComponent,
     };
   },
 });

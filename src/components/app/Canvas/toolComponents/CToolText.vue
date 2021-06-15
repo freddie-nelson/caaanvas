@@ -1,6 +1,9 @@
 <template>
-  <div v-if="!isOpen" class="bg-bg-light border-b-light border-2 border-solid p-5 rounded-md">
-    <h1 class="text-xl" style="min-width: 12rem">{{ data.title }}</h1>
+  <div v-if="!isOpen" class="bg-bg-light border-b-light border-2 border-solid p-5 rounded-lg">
+    <h1 class="text-xl" style="min-width: 20rem">
+      {{ data.title }}
+      <p v-if="!data.title" class="opacity-40">Your Amazing Title</p>
+    </h1>
   </div>
 </template>
 
