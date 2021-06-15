@@ -2,25 +2,79 @@
   <div
     v-show="isOptionsVisible"
     ref="optionsElement"
-    class="absolute top-0 left-0 w-52 h-12 bg-bg-dark rounded-md"
+    class="absolute top-0 left-0 bg-bg-dark rounded-md text-bg-light"
     :style="{
       transform: `scale(${$store.state.canvas.zoom.scale}) translate(${optionsPos.x}px, ${optionsPos.y}px)`,
     }"
-  ></div>
+  >
+    <button
+      class="
+        w-12
+        h-12
+        focus:outline-none
+        p-3
+        opacity-50
+        hover:opacity-100
+        transition-opacity
+        duration-150
+        focus:text-accent-500
+        focus:opacity-100
+      "
+      style="transition-property: opacity, color"
+    >
+      <Icon class="w-full h-full" :icon="icons.move" />
+    </button>
+    <button
+      class="
+        w-12
+        h-12
+        focus:outline-none
+        p-3
+        opacity-50
+        hover:opacity-100
+        transition-opacity
+        duration-150
+        focus:text-accent-500
+        focus:opacity-100
+      "
+      style="transition-property: opacity, color"
+    >
+      <Icon class="w-full h-full" :icon="icons.open" />
+    </button>
+    <button
+      class="
+        w-12
+        h-12
+        focus:outline-none
+        p-3
+        opacity-50
+        hover:opacity-100
+        duration-150
+        transition-opacity
+        focus:text-accent-500
+        focus:opacity-100
+      "
+    >
+      <Icon class="w-full h-full" :icon="icons.delete" />
+    </button>
+  </div>
 </template>
 
 <script lang="ts">
 import useComponentEvent from "@/utils/useComponentEvent";
 import { defineComponent, ref, reactive, computed, watch } from "vue";
+import { useStore } from "@/store";
 
+import { Icon } from "@iconify/vue";
 import moveIcon from "@iconify-icons/feather/move";
 import openIcon from "@iconify-icons/feather/edit-2";
 import deleteIcon from "@iconify-icons/feather/trash";
-import { useStore } from "@/store";
 
 export default defineComponent({
   name: "COptionsMenu",
-  components: {},
+  components: {
+    Icon,
+  },
   props: {
     show: {
       type: Boolean,
@@ -74,7 +128,16 @@ export default defineComponent({
         optionsTarget.compareDocumentPosition(e.target as Node) &
         Node.DOCUMENT_POSITION_CONTAINED_BY;
 
-      if (e.target !== optionsTarget && e.target !== optionsElement.value && !containsTarget)
+      const optionsMenuButton =
+        optionsElement.value.compareDocumentPosition(e.target as Node) &
+        Node.DOCUMENT_POSITION_CONTAINED_BY;
+
+      if (
+        e.target !== optionsTarget &&
+        e.target !== optionsElement.value &&
+        !containsTarget &&
+        !optionsMenuButton
+      )
         isOptionsVisible.value = false;
     });
 
