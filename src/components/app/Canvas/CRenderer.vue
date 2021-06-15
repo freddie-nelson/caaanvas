@@ -26,8 +26,7 @@
     <c-options-menu
       :show="showOptions"
       :target="optionsTarget"
-      @start-move="canMoveSelectedComponent = true"
-      @end-move="canMoveSelectedComponent = false"
+      @move="canMoveSelectedComponent = true"
       @delete="deleteSelectedComponent"
     />
   </div>
@@ -360,6 +359,10 @@ export default defineComponent({
       const newY = rawSelectedComponent.y - diffY;
 
       store.commit("SET_COMPONENT_POSITION", { index: selectedComponent.index, x: newX, y: newY });
+    });
+
+    useComponentEvent(document.body, "mouseup", () => {
+      if (canMoveSelectedComponent.value) canMoveSelectedComponent.value = false;
     });
 
     // delete selected component

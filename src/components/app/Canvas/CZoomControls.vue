@@ -13,6 +13,7 @@
       p-4
       font-medium
       text-sm text-bg-light
+      z-10
     "
   >
     <button zoom-dropdown class="flex items-center focus:outline-none" @click="toggleZoomMenu">

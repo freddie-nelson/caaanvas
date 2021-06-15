@@ -22,8 +22,7 @@
         focus:opacity-100
       "
       style="transition-property: opacity, color"
-      @mousedown="$emit('start-move')"
-      @mouseup="$emit('end-move')"
+      @mousedown="$emit('move')"
     >
       <Icon class="w-full h-full" :icon="icons.move" />
     </button>
@@ -145,6 +144,13 @@ export default defineComponent({
       )
         isOptionsVisible.value = false;
     });
+
+    watch(
+      computed(() => store.state.canvas.selectedTool),
+      () => {
+        isOptionsVisible.value = false;
+      },
+    );
 
     return {
       optionsElement,

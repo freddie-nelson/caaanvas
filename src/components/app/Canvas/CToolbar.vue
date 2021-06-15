@@ -2,7 +2,20 @@
   <transition name="fade">
     <div
       v-if="showToolCursor"
-      class="absolute top-0 left-0 w-8 h-8 p-2 ml-1 mt-1 rounded-md bg-bg-dark pointer-events-none"
+      class="
+        absolute
+        top-0
+        left-0
+        w-8
+        h-8
+        p-2
+        ml-1
+        mt-1
+        rounded-md
+        bg-bg-dark
+        pointer-events-none
+        z-10
+      "
       :style="{ transform: `translate(${mouse.x}px, ${mouse.y}px)` }"
     >
       <Icon class="text-bg-light w-full h-full" :icon="$store.state.canvas.selectedTool.icon" />
@@ -17,6 +30,7 @@
   <aside
     ui-element
     class="
+      z-10
       absolute
       left-4
       top-0
@@ -105,16 +119,18 @@ export default defineComponent({
         return;
 
       const index = Number((e as KeyboardEvent).key) - 1;
+
       if (index !== NaN && index >= 0 && index < store.state.canvas.tools.length) {
         const tool = store.state.canvas.tools[index];
+
         if (store.state.canvas.selectedTool.name === tool.name) {
           store.commit("SET_SELECTED_TOOL", { name: "" });
         } else {
           store.commit("SET_SELECTED_TOOL", tool);
         }
-      }
 
-      showToolCursor.value = true;
+        showToolCursor.value = true;
+      }
     });
 
     // setup tool cursor
