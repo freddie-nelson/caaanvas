@@ -23,7 +23,12 @@
       <c-tool-flag v-else-if="c.type === 'flag'" :data="c.data" />
     </div>
 
-    <c-options-menu :show="showOptions" :target="optionsTarget" />
+    <c-options-menu
+      :show="showOptions"
+      :target="optionsTarget"
+      @start-move="canMoveSelectedComponent = true"
+      @end-move="canMoveSelectedComponent = false"
+    />
   </div>
 </template>
 
@@ -31,7 +36,16 @@
 import { Component, useStore } from "@/store";
 import { Mouse, useMouse } from "@/utils/useMouse";
 import useComponentEvent from "@/utils/useComponentEvent";
-import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+  watch,
+} from "vue";
 
 import COptionsMenu from "@/components/app/Canvas/COptionsMenu.vue";
 import CToolText from "@/components/app/Canvas/toolComponents/CToolText.vue";
@@ -285,7 +299,7 @@ export default defineComponent({
       const padding =
         window.innerWidth > window.innerHeight ? window.innerWidth : window.innerHeight;
 
-      components.forEach((c) => {
+      components.forEach((c, i) => {
         if (
           c.x > boundaries.left - padding &&
           c.x < boundaries.right + padding &&
@@ -297,6 +311,7 @@ export default defineComponent({
             x: c.x - boundaries.left,
             y: c.y - boundaries.top,
             data: c.data,
+            index: i,
           });
         }
       });
@@ -323,11 +338,37 @@ export default defineComponent({
 
     const showOptions = ref(false);
     const optionsTarget = ref<Element>();
+    let selectedComponent: Component | null = null;
 
-    const handleComponentClick = (target: Element) => {
+    const handleComponentClick = (target: Element, ci: number) => {
       showOptions.value = !showOptions.value;
+
+      optionsTarget.value?.classList.remove("z-10");
       optionsTarget.value = target;
+      target.classList.add("z-10");
+
+      selectedComponent = visibleComponents.value[ci];
     };
+
+    // moving components with mouse
+    const canMoveSelectedComponent = ref(false);
+    watch(mouse, () => {
+      if (
+        !canMoveSelectedComponent.value ||
+        !selectedComponent ||
+        selectedComponent.index === undefined
+      )
+        return;
+
+      const diffX = (mouse.lastX - mouse.x) / zoom.value.scale;
+      const diffY = (mouse.lastY - mouse.y) / zoom.value.scale;
+
+      const rawSelectedComponent = components[selectedComponent.index];
+      const newX = rawSelectedComponent.x - diffX;
+      const newY = rawSelectedComponent.y - diffY;
+
+      store.commit("SET_COMPONENT_POSITION", { index: selectedComponent.index, x: newX, y: newY });
+    });
 
     return {
       renderer,
@@ -340,6 +381,8 @@ export default defineComponent({
       showOptions,
       optionsTarget,
       handleComponentClick,
+      selectedComponent,
+      canMoveSelectedComponent,
     };
   },
 });

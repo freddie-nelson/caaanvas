@@ -21,6 +21,8 @@
         focus:opacity-100
       "
       style="transition-property: opacity, color"
+      @mousedown="$emit('start-move')"
+      @mouseup="$emit('end-move')"
     >
       <Icon class="w-full h-full" :icon="icons.move" />
     </button>
