@@ -98,22 +98,38 @@ export default defineComponent({
       y: 0,
     });
 
-    const observer = new MutationObserver((entries) => {
-      const box = (entries[0].target as Element).getBoundingClientRect();
-      optionsPos.x = box.x / store.state.canvas.zoom.scale;
-      optionsPos.y = (box.y + box.height) / store.state.canvas.zoom.scale + 7;
-    });
-
-    const showOptions = (target: Element) => {
-      observer.disconnect();
-
-      isOptionsVisible.value = true;
-      optionsTarget = target;
-      observer.observe(target, { attributes: true });
-
+    const updateMenuPosition = (target: Element) => {
       const box = target.getBoundingClientRect();
       optionsPos.x = box.x / store.state.canvas.zoom.scale;
       optionsPos.y = (box.y + box.height) / store.state.canvas.zoom.scale + 7;
+    };
+
+    const observer = new MutationObserver((entries) => {
+      updateMenuPosition(<Element>entries[0].target);
+    });
+
+    watch(
+      computed(() => props.target),
+      (target, oldTarget) => {
+        if (
+          target === undefined ||
+          !(target.compareDocumentPosition(document.body) & Node.DOCUMENT_POSITION_CONTAINS) ||
+          target === oldTarget
+        )
+          return;
+
+        observer.disconnect();
+
+        optionsTarget = target;
+        updateMenuPosition(target);
+        observer.observe(target, { attributes: true });
+      },
+    );
+
+    const showOptions = (target: Element) => {
+      isOptionsVisible.value = true;
+      optionsTarget = target;
+      updateMenuPosition(target);
     };
 
     watch(

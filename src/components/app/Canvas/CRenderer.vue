@@ -7,7 +7,9 @@
   >
     <div
       v-for="(c, i) in visibleComponents"
+      :ref="addRenderedComponent"
       :key="i"
+      :index="`${c.index}`"
       :style="{ transform: `scale(${zoom.scale}) translate(${c.x}px, ${c.y}px)` }"
       class="absolute top-0 left-0"
       @click="handleComponentClick($event.currentTarget, i)"
@@ -40,8 +42,10 @@ import {
   computed,
   defineComponent,
   nextTick,
+  onBeforeUpdate,
   onMounted,
   onUnmounted,
+  onUpdated,
   reactive,
   ref,
   watch,
@@ -346,14 +350,49 @@ export default defineComponent({
 
     const showOptions = ref(false);
     const optionsTarget = ref<Element>();
-    let selectedComponent: Component | null = null;
+    let selectedComponent: Component | undefined;
+
+    const setOptionsTarget = (target: Element) => {
+      optionsTarget.value?.classList.remove("z-10");
+      target.classList.add("z-10");
+      optionsTarget.value = target;
+    };
+
+    let renderedComponents: HTMLDivElement[] = [];
+
+    const addRenderedComponent = (el: HTMLDivElement) => {
+      if (el) renderedComponents.push(el);
+    };
+    onBeforeUpdate(() => {
+      renderedComponents = [];
+    });
+
+    let lastTargetIndex = "";
+    const findSelectedComponent = (rendered: HTMLDivElement[]) => {
+      if (
+        optionsTarget.value &&
+        optionsTarget.value.getAttribute("index") === lastTargetIndex &&
+        optionsTarget.value.compareDocumentPosition(document.body) & Node.DOCUMENT_POSITION_CONTAINS
+      )
+        return;
+
+      rendered.forEach((c) => {
+        const index = Number(c.getAttribute("index"));
+        if (selectedComponent?.index === index) {
+          console.log(index + " " + selectedComponent?.index);
+          selectedComponent = visibleComponents.value.find((c) => c.index === index);
+
+          setOptionsTarget(c);
+        }
+      });
+    };
+    onUpdated(() => {
+      findSelectedComponent(renderedComponents);
+    });
 
     const handleComponentClick = (target: Element, ci: number) => {
-      optionsTarget.value?.classList.remove("z-10");
-      optionsTarget.value = target;
-      target.classList.add("z-10");
-
       showOptions.value = !showOptions.value;
+      setOptionsTarget(target);
 
       selectedComponent = visibleComponents.value[ci];
     };
@@ -399,8 +438,10 @@ export default defineComponent({
       zoom,
       visibleComponents,
       addNewComponent,
+      addRenderedComponent,
       showOptions,
       optionsTarget,
+      setOptionsTarget,
       handleComponentClick,
       selectedComponent,
       canMoveSelectedComponent,
