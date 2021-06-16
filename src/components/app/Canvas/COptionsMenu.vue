@@ -147,8 +147,8 @@ export default defineComponent({
 
     watch(
       computed(() => store.state.canvas.selectedTool),
-      () => {
-        isOptionsVisible.value = false;
+      (tool) => {
+        if (tool.name !== "") isOptionsVisible.value = false;
       },
     );
 

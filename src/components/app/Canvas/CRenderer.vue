@@ -36,7 +36,16 @@
 import { Component, useStore } from "@/store";
 import { Mouse, useMouse } from "@/utils/useMouse";
 import useComponentEvent from "@/utils/useComponentEvent";
-import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  reactive,
+  ref,
+  watch,
+} from "vue";
 
 import COptionsMenu from "@/components/app/Canvas/COptionsMenu.vue";
 import CToolText from "@/components/app/Canvas/toolComponents/CToolText.vue";
@@ -324,6 +333,14 @@ export default defineComponent({
         store.commit("ADD_COMPONENT", component);
 
         store.commit("SET_SELECTED_TOOL", { name: "" });
+
+        nextTick(() => {
+          const children = renderer.value.children;
+          if (children.length - 2 < 0) return;
+
+          const element = <HTMLDivElement>children[children.length - 2];
+          requestAnimationFrame(() => element.click());
+        });
       }
     };
 
@@ -332,11 +349,11 @@ export default defineComponent({
     let selectedComponent: Component | null = null;
 
     const handleComponentClick = (target: Element, ci: number) => {
-      showOptions.value = !showOptions.value;
-
       optionsTarget.value?.classList.remove("z-10");
       optionsTarget.value = target;
       target.classList.add("z-10");
+
+      showOptions.value = !showOptions.value;
 
       selectedComponent = visibleComponents.value[ci];
     };
