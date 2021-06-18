@@ -17,6 +17,8 @@
       <c-tool-text
         v-if="c.type === 'text'"
         :data="c.data"
+        :open="selectedComponent && selectedComponent.index === c.index && isSelectedComponentOpen"
+        @close="isSelectedComponentOpen = false"
         @update-data-key="c.data[$event.key] = $event.value"
       />
       <c-tool-link v-else-if="c.type === 'link'" :data="c.data" />
@@ -30,6 +32,7 @@
       :target="optionsTarget"
       @move="canMoveSelectedComponent = true"
       @delete="deleteSelectedComponent"
+      @open="isSelectedComponentOpen = true"
     />
   </div>
 </template>
@@ -350,7 +353,7 @@ export default defineComponent({
 
     const showOptions = ref(false);
     const optionsTarget = ref<Element>();
-    let selectedComponent: Component | undefined;
+    let selectedComponent = ref<Component>();
 
     const setOptionsTarget = (target: Element) => {
       optionsTarget.value?.classList.remove("z-10");
@@ -378,9 +381,9 @@ export default defineComponent({
 
       rendered.forEach((c) => {
         const index = Number(c.getAttribute("index"));
-        if (selectedComponent?.index === index) {
-          console.log(index + " " + selectedComponent?.index);
-          selectedComponent = visibleComponents.value.find((c) => c.index === index);
+        if (selectedComponent.value?.index === index) {
+          // console.log(index + " " + selectedComponent?.index);
+          selectedComponent.value = visibleComponents.value.find((c) => c.index === index);
 
           setOptionsTarget(c);
         }
@@ -394,7 +397,7 @@ export default defineComponent({
       showOptions.value = !showOptions.value;
       setOptionsTarget(target);
 
-      selectedComponent = visibleComponents.value[ci];
+      selectedComponent.value = visibleComponents.value[ci];
     };
 
     // moving components with mouse
@@ -402,19 +405,23 @@ export default defineComponent({
     watch(mouse, () => {
       if (
         !canMoveSelectedComponent.value ||
-        !selectedComponent ||
-        selectedComponent.index === undefined
+        !selectedComponent.value ||
+        selectedComponent.value.index === undefined
       )
         return;
 
       const diffX = (mouse.lastX - mouse.x) / zoom.value.scale;
       const diffY = (mouse.lastY - mouse.y) / zoom.value.scale;
 
-      const rawSelectedComponent = components[selectedComponent.index];
+      const rawSelectedComponent = components[selectedComponent.value.index];
       const newX = rawSelectedComponent.x - diffX;
       const newY = rawSelectedComponent.y - diffY;
 
-      store.commit("SET_COMPONENT_POSITION", { index: selectedComponent.index, x: newX, y: newY });
+      store.commit("SET_COMPONENT_POSITION", {
+        index: selectedComponent.value.index,
+        x: newX,
+        y: newY,
+      });
     });
 
     useComponentEvent(document.body, "mouseup", () => {
@@ -423,12 +430,15 @@ export default defineComponent({
 
     // delete selected component
     const deleteSelectedComponent = () => {
-      if (!selectedComponent || selectedComponent.index === undefined) return;
+      if (!selectedComponent.value || selectedComponent.value.index === undefined) return;
 
       showOptions.value = !showOptions.value;
       optionsTarget.value = undefined;
-      store.commit("REMOVE_COMPONENT", selectedComponent.index);
+      store.commit("REMOVE_COMPONENT", selectedComponent.value.index);
     };
+
+    // open selected component
+    const isSelectedComponentOpen = ref(false);
 
     return {
       renderer,
@@ -446,6 +456,7 @@ export default defineComponent({
       selectedComponent,
       canMoveSelectedComponent,
       deleteSelectedComponent,
+      isSelectedComponentOpen,
     };
   },
 });

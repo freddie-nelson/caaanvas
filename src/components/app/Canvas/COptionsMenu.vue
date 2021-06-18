@@ -40,6 +40,7 @@
         focus:opacity-100
       "
       style="transition-property: opacity, color"
+      @click="$emit('open')"
     >
       <Icon class="w-full h-full" :icon="icons.open" />
     </button>
