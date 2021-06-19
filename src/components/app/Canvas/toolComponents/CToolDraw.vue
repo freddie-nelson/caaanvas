@@ -1,11 +1,15 @@
 <template>
-  <div v-if="!isOpen" class="bg-bg-light border-b-light border-2 border-solid p-5 rounded-md">
-    <h1 class="text-xl" style="min-width: 12rem">{{ data.title }}</h1>
-  </div>
+  <c-tool :open="open" @close="$emit('close')">
+    <template v-slot:main></template>
+
+    <template v-slot:open></template>
+  </c-tool>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
+
+import CTool from "@/components/app/Canvas/toolComponents/CTool.vue";
 
 interface Text {
   title: string;
@@ -14,19 +18,18 @@ interface Text {
 
 export default defineComponent({
   name: "CToolDraw",
-  components: {},
+  components: {
+    CTool,
+  },
   props: {
     data: {
       type: Object as () => Text,
       required: true,
     },
-  },
-  setup() {
-    const isOpen = ref(false);
-
-    return {
-      isOpen,
-    };
+    open: {
+      type: Boolean,
+      default: false,
+    },
   },
 });
 </script>

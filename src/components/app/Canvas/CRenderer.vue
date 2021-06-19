@@ -21,10 +21,34 @@
         @close="isSelectedComponentOpen = false"
         @update-data-key="c.data[$event.key] = $event.value"
       />
-      <c-tool-link v-else-if="c.type === 'link'" :data="c.data" />
-      <c-tool-image v-else-if="c.type === 'image'" :data="c.data" />
-      <c-tool-draw v-else-if="c.type === 'draw'" :data="c.data" />
-      <c-tool-flag v-else-if="c.type === 'flag'" :data="c.data" />
+      <c-tool-link
+        v-else-if="c.type === 'link'"
+        :data="c.data"
+        :open="selectedComponent && selectedComponent.index === c.index && isSelectedComponentOpen"
+        @close="isSelectedComponentOpen = false"
+        @update-data-key="c.data[$event.key] = $event.value"
+      />
+      <c-tool-image
+        v-else-if="c.type === 'image'"
+        :data="c.data"
+        :open="selectedComponent && selectedComponent.index === c.index && isSelectedComponentOpen"
+        @close="isSelectedComponentOpen = false"
+        @update-data-key="c.data[$event.key] = $event.value"
+      />
+      <c-tool-draw
+        v-else-if="c.type === 'draw'"
+        :data="c.data"
+        :open="selectedComponent && selectedComponent.index === c.index && isSelectedComponentOpen"
+        @close="isSelectedComponentOpen = false"
+        @update-data-key="c.data[$event.key] = $event.value"
+      />
+      <c-tool-flag
+        v-else-if="c.type === 'flag'"
+        :data="c.data"
+        :open="selectedComponent && selectedComponent.index === c.index && isSelectedComponentOpen"
+        @close="isSelectedComponentOpen = false"
+        @update-data-key="c.data[$event.key] = $event.value"
+      />
     </div>
 
     <c-options-menu
