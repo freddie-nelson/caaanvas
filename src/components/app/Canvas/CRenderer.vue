@@ -133,7 +133,7 @@ export default defineComponent({
     // handle panning around canvas
     // panning with scroll
     useComponentEvent(document.body, "wheel", (event) => {
-      if (controlHeld.value) return;
+      if (controlHeld.value || isSelectedComponentOpen.value) return;
       const e = <WheelEvent>event;
 
       boundaries.left += e.deltaX / 2;
@@ -255,9 +255,10 @@ export default defineComponent({
       "wheel",
       (event) => {
         const e = <WheelEvent>event;
-        if (!controlHeld.value || e.deltaY === 0) return;
+        if (controlHeld.value) e.preventDefault();
+        else return;
 
-        e.preventDefault();
+        if (e.deltaY === 0 || isSelectedComponentOpen.value) return;
 
         const direction = e.deltaY > 0 ? 1 : -1;
         const scale =
@@ -277,7 +278,7 @@ export default defineComponent({
 
     // handle zooming with ctrl + -/=
     useComponentEvent(document.body, "keydown", (event) => {
-      if (!controlHeld.value) return;
+      if (!controlHeld.value || isSelectedComponentOpen.value) return;
       const e = <KeyboardEvent>event;
 
       let direction: number;

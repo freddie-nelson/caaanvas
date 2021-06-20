@@ -34,6 +34,8 @@ module.exports = {
         "input-focus": colors.coolGray[700],
         "input-blur": colors.coolGray[500],
       },
+
+      borderWidth: ["hover", "focus"],
     },
   },
   variants: {

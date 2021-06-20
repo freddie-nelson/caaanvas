@@ -18,14 +18,15 @@
           items-center
         "
       >
-        <div class="bg-bg-light p-8 rounded-lg flex w-full max-w-4xl relative">
+        <div class="bg-bg-light p-10 rounded-lg flex flex-col w-full max-w-4xl relative">
           <button
             class="
               w-7
               h-7
               text-t-main
               absolute
-              right-8
+              right-3.5
+              top-3.5
               hover:text-primary-600
               focus:text-primary-600
               focus:outline-none
