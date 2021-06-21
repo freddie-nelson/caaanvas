@@ -125,7 +125,7 @@ export default defineComponent({
     const store = useStore();
 
     const currentColor = ref("red");
-    const currentSize = ref(10);
+    const currentSize = ref(15);
 
     const saveDrawing = () => {
       const canvas = <HTMLCanvasElement>document.getElementById("drawCanvas");
