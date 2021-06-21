@@ -1,5 +1,5 @@
 <template>
-  <c-paint-canvas
+  <c-canvas-circles
     fadeOut
     useWindow
     :brushSize="brushSize"
@@ -10,7 +10,16 @@
   />
 
   <main
-    class="absolute flex flex-col justify-center items-center w-full h-full select-none overflow-x-hidden"
+    class="
+      absolute
+      flex flex-col
+      justify-center
+      items-center
+      w-full
+      h-full
+      select-none
+      overflow-x-hidden
+    "
   >
     <c-gradient-heading style="padding-bottom: 0">caaanvas.</c-gradient-heading>
     <c-sub-heading class="text-center"
@@ -29,7 +38,16 @@
     <p class="text-t-sub font-medium">
       made with
       <icon
-        class="heart-icon w-4 h-4 inline text-primary-600 mb-0.5 hover:text-accent-600 transition-colors"
+        class="
+          heart-icon
+          w-4
+          h-4
+          inline
+          text-primary-600
+          mb-0.5
+          hover:text-accent-600
+          transition-colors
+        "
         :icon="icons.heart"
       />
       by
@@ -62,7 +80,7 @@ import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
 import CSubHeading from "@/components/shared/Heading/CSubHeading.vue";
 import CButton from "@/components/shared/Button/CButton.vue";
 import CButtonOutline from "@/components/shared/Button/CButtonOutline.vue";
-import CPaintCanvas from "@/components/shared/PaintCanvas/CPaintCanvas.vue";
+import CCanvasCircles from "@/components/shared/Canvas/CCanvasCircles.vue";
 
 import { Icon } from "@iconify/vue";
 import githubIcon from "@iconify-icons/feather/github";
@@ -75,7 +93,7 @@ export default defineComponent({
     CSubHeading,
     CButton,
     CButtonOutline,
-    CPaintCanvas,
+    CCanvasCircles,
     Icon,
   },
   setup() {

@@ -18,7 +18,7 @@
           items-center
         "
       >
-        <div class="bg-bg-light p-10 rounded-lg flex flex-col w-full max-w-4xl relative">
+        <div class="bg-bg-light p-10 rounded-lg flex flex-col relative" :class="modalClasses">
           <button
             class="
               w-7
@@ -57,6 +57,10 @@ export default defineComponent({
     Icon,
   },
   props: {
+    modalClasses: {
+      type: String,
+      default: "w-full max-w-4xl",
+    },
     open: {
       type: Boolean,
       default: false,
