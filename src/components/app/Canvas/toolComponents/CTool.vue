@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-hidden bg-bg-light border-b-light border-2 border-solid p-5 rounded-lg">
+  <div class="overflow-hidden bg-bg-light border-b-light border-2 border-solid rounded-lg">
     <slot name="main"></slot>
 
     <teleport to="body">

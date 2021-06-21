@@ -36,6 +36,10 @@ module.exports = {
       },
 
       borderWidth: ["hover", "focus"],
+
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      },
     },
   },
   variants: {

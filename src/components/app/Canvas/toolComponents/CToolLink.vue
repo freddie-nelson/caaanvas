@@ -1,5 +1,5 @@
 <template>
-  <c-tool style="padding: 0rem" :open="open" @close="$emit('close')">
+  <c-tool :open="open" @close="$emit('close')">
     <template v-slot:main>
       <div
         linkBackground="true"

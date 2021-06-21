@@ -1,5 +1,5 @@
 <template>
-  <c-tool :open="open" @close="$emit('close')">
+  <c-tool class="p-5" :open="open" @close="$emit('close')">
     <template v-slot:main>
       <h1 class="text-2xl font-medium" style="min-width: 20rem">
         {{ data.title }}
