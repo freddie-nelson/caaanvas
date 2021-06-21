@@ -3,7 +3,7 @@
     <template v-slot:main>
       <div
         linkBackground="true"
-        class="w-96 h-60 bg-gray-400 flex overflow-hidden"
+        class="w-96 h-60 bg-b-light flex overflow-hidden"
         :style="{ backgroundImage: `url(${data.image})` }"
         @dblclick="handleClick"
       >
