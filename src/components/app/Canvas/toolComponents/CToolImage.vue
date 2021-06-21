@@ -12,19 +12,7 @@
           <line x1="100%" y1="0" x2="0" y2="100%" stroke="currentColor" stroke-width="2" />
         </svg>
 
-        <p
-          class="
-            absolute
-            bg-gradient-radial
-            from-bg-light
-            via-bg-light
-            to-transparent
-            p-8
-            text-t-main
-          "
-        >
-          No Image
-        </p>
+        <p class="absolute bg-bg-light p-5 rounded-full text-t-main">No Image</p>
       </div>
     </template>
 
