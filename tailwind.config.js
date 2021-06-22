@@ -24,6 +24,7 @@ module.exports = {
         transparent: "transparent",
         primary: colors.violet,
         accent: colors.pink,
+        danger: colors.red,
         "bg-dark": colors.coolGray[800],
         "bg-light": colors.coolGray[50],
         "t-main": colors.coolGray[900],

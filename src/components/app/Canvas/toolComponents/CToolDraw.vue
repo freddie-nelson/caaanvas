@@ -81,13 +81,18 @@
         ></button>
       </div>
 
-      <c-button
-        class="absolute top-5 right-0 left-0 mx-auto"
+      <div
+        class="absolute top-5 w-full flex items-center justify-center"
         style="transform: scale(0.8); transform-origin: top center"
-        @click="saveDrawing"
       >
-        Save Drawing
-      </c-button>
+        <c-button class="mr-9 flex items-center" @click="saveDrawing">
+          <Icon class="w-5 h-5 mr-2" :icon="icons.save" /> Save Drawing
+        </c-button>
+
+        <c-button class="bg-danger-600 flex items-center" @click="clearDrawing">
+          <Icon class="w-5 h-5 mr-2" :icon="icons.trash" /> Clear Drawing
+        </c-button>
+      </div>
     </template>
   </c-tool>
 </template>
@@ -100,6 +105,10 @@ import CCanvasDraw from "@/components/shared/Canvas/CCanvasDraw.vue";
 import CButton from "@/components/shared/Button/CButton.vue";
 import { useStore } from "@/store";
 
+import { Icon } from "@iconify/vue";
+import saveIcon from "@iconify-icons/feather/save";
+import trashIcon from "@iconify-icons/feather/trash-2";
+
 interface Draw {
   image: string;
 }
@@ -110,6 +119,7 @@ export default defineComponent({
     CTool,
     CCanvasDraw,
     CButton,
+    Icon,
   },
   props: {
     data: {
@@ -139,14 +149,39 @@ export default defineComponent({
       store.commit("ADD_TOAST", { text: "💾 Drawing saved!" });
     };
 
+    const clearDrawing = () => {
+      const canvas = <HTMLCanvasElement>document.getElementById("drawCanvas");
+      const ctx = canvas?.getContext("2d");
+      if (!canvas || !ctx) return;
+
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+
     return {
       currentColor,
-      colors: ["red", "orange", "yellow", "green", "blue", "indigo", "violet", "white", "black"],
+      colors: [
+        "#e74c3c",
+        "#e67e22",
+        "#f1c40f",
+        "#2ecc71",
+        "#3498db",
+        "#9b59b6",
+        "#f472d0",
+        "white",
+        "black",
+      ],
 
       currentSize,
       sizes: [10, 15, 25, 40],
 
       saveDrawing,
+      clearDrawing,
+
+      icons: {
+        trash: trashIcon,
+        save: saveIcon,
+      },
     };
   },
 });
