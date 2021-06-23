@@ -1,7 +1,14 @@
 <template>
-  <c-tool modalClasses="max-w-none draw-tool-modal" :open="open" @close="$emit('close')">
+  <c-tool
+    modalClasses="max-w-none draw-tool-modal flex justify-center items-center"
+    :open="open"
+    @close="
+      $emit('close')
+      // saveDrawing();
+    "
+  >
     <template v-slot:main>
-      <img :src="data.image" alt="" />
+      <img class="max-w-3xl" :src="data.image" alt="" />
       <div v-if="!data.image" class="w-80 h-52 font-mono flex items-center justify-center">
         <svg
           class="absolute w-full h-full text-b-light rounded-lg"
@@ -82,7 +89,7 @@
       </div>
 
       <div
-        class="absolute top-5 w-full flex items-center justify-center"
+        class="absolute top-5 select-none"
         style="transform: scale(0.8); transform-origin: top center"
       >
         <c-button class="mr-9 flex items-center" @click="saveDrawing">
@@ -98,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, watch } from "vue";
 
 import CTool from "@/components/app/Canvas/toolComponents/CTool.vue";
 import CCanvasDraw from "@/components/shared/Canvas/CCanvasDraw.vue";
@@ -131,32 +138,58 @@ export default defineComponent({
       default: false,
     },
   },
-  setup() {
+  setup(props) {
     const store = useStore();
 
-    const currentColor = ref("red");
+    const currentColor = ref("#e74c3c");
     const currentSize = ref(15);
 
-    const saveDrawing = () => {
+    const useCanvas = () => {
       const canvas = <HTMLCanvasElement>document.getElementById("drawCanvas");
+      const ctx = canvas?.getContext("2d");
+
+      return {
+        canvas,
+        ctx,
+      };
+    };
+
+    const saveDrawing = () => {
+      const { canvas } = useCanvas();
       if (!canvas) return;
 
-      const data = canvas.toDataURL("image/webp", 0.8);
-      console.log(data);
-
-      // TODO save data to server
+      const data = canvas.toDataURL("image/png");
+      props.data.image = data;
 
       store.commit("ADD_TOAST", { text: "💾 Drawing saved!" });
     };
 
     const clearDrawing = () => {
-      const canvas = <HTMLCanvasElement>document.getElementById("drawCanvas");
-      const ctx = canvas?.getContext("2d");
+      const { canvas, ctx } = useCanvas();
       if (!canvas || !ctx) return;
 
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
+
+    watch(
+      computed(() => props.open),
+      (open) => {
+        if (!open || !props.data.image) return;
+
+        requestAnimationFrame(() => {
+          const { canvas, ctx } = useCanvas();
+          if (!canvas || !ctx) return;
+
+          const img = new Image();
+          img.onload = () => {
+            ctx.drawImage(img, 0, 0);
+          };
+          img.src = props.data.image;
+          console.log(props.data.image);
+        });
+      },
+    );
 
     return {
       currentColor,
