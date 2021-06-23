@@ -1,7 +1,7 @@
 <template>
   <c-tool class="max-w-lg" :open="open" @close="$emit('close')">
     <template v-slot:main>
-      <img :src="data.image" alt="" />
+      <img :src="data.image" class="max-w-2xl" alt="" />
       <div v-if="!data.image" class="w-80 h-52 font-mono flex items-center justify-center">
         <svg
           class="absolute w-full h-full text-b-light rounded-lg"
@@ -47,10 +47,12 @@
           class="flex flex-col items-center p-12 cursor-pointer"
         >
           <Icon class="w-10 h-10" :icon="icons.upload" />
-          <p class="text-2xl font-semibold pt-3 text-center">{{ filename || "Upload Image" }}</p>
+          <p class="text-2xl font-semibold pt-3 text-center">
+            {{ (file ? file.name : null) || "Upload Image" }}
+          </p>
         </div>
 
-        <c-button v-if="filename" class="w-48 -mt-6 max-h-14 mx-auto" @click="uploadFile"
+        <c-button v-if="file && file.name" class="w-48 -mt-6 max-h-14 mx-auto" @click="uploadFile"
           >Upload</c-button
         >
 
@@ -67,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, Ref, ref } from "vue";
 
 import CTool from "@/components/app/Canvas/toolComponents/CTool.vue";
 import CButton from "@/components/shared/Button/CButton.vue";
@@ -102,23 +104,41 @@ export default defineComponent({
     const fileInput = ref(document.createElement("input"));
     const highlight = ref(false);
 
-    const filename = ref("");
+    const file = ref<File>();
 
-    const handleFile = (file: File) => {
-      if (!file || !file.type.match(/(png)|(jpg)|(jpeg)|(webp)/)) return;
+    const handleFile = (f: File) => {
+      if (!f || !f.type.match(/(png)|(jpg)|(jpeg)|(webp)/)) return;
 
-      filename.value = file.name;
+      file.value = f;
     };
 
-    const uploadFile = () => {
-      console.log("IMPLEMENT UPLOADING IMAGE");
+    const readFile = (file: File): Promise<string | ArrayBuffer> => {
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.readAsDataURL(file);
+
+        fr.onload = () => {
+          if (fr.result) resolve(fr.result);
+          else reject("error");
+        };
+        fr.onerror = () => reject("error");
+      });
+    };
+
+    const uploadFile = async () => {
+      if (!file.value) return;
+
+      const data = await readFile(file.value);
+      console.log(data);
+
+      // TODO upload to server
     };
 
     return {
       fileInput,
       highlight,
       handleFile,
-      filename,
+      file,
       uploadFile,
       icons: {
         upload: uploadIcon,
