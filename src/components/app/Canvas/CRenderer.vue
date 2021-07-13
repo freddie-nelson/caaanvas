@@ -362,6 +362,13 @@ export default defineComponent({
           type: store.state.canvas.selectedTool.name,
           data: {},
         };
+
+        if (component.type === "flag") {
+          component.data.name = `Flag ${Date.now().toString().substring(9)}${
+            Math.random().toString().split(".")[1]
+          }`;
+        }
+
         store.commit("ADD_COMPONENT", component);
 
         store.commit("SET_SELECTED_TOOL", { name: "" });

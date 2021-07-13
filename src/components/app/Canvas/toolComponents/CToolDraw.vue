@@ -2,7 +2,7 @@
   <c-tool
     modalClasses="max-w-none draw-tool-modal flex justify-center items-center"
     :open="open"
-    @close="
+    @close-btn="
       $emit('close')
       // saveDrawing();
     "

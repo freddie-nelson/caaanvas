@@ -1,5 +1,5 @@
 <template>
-  <c-tool class="max-w-lg" :open="open" @close="$emit('close')">
+  <c-tool class="max-w-lg" :open="open" @close-btn="$emit('close')">
     <template v-slot:main>
       <img :src="data.image" class="max-w-2xl" alt="" />
       <div v-if="!data.image" class="w-80 h-52 font-mono flex items-center justify-center">

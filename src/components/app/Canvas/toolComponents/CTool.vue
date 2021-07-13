@@ -33,7 +33,7 @@
               transition-colors
               duration-200
             "
-            @click="$emit('close')"
+            @click="$emit('close-btn')"
           >
             <Icon class="w-full h-full" :icon="icons.close" />
           </button>
