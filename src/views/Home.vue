@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { defineComponent, ref, computed, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
 
 import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
@@ -109,6 +109,10 @@ export default defineComponent({
     const store = useStore();
 
     onMounted(() => {
+      if (localStorage.getItem("visited")) return;
+
+      localStorage.setItem("visited", "true");
+
       setTimeout(
         () =>
           store.commit("ADD_TOAST", {
@@ -116,6 +120,13 @@ export default defineComponent({
           }),
         600,
       );
+    });
+
+    onUnmounted(() => {
+      const btn = document.getElementById("closeToastBtn");
+      if (!btn) return;
+
+      btn.click();
     });
 
     return {

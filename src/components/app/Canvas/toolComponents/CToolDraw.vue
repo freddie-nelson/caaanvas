@@ -159,7 +159,8 @@ export default defineComponent({
       if (!canvas) return;
 
       const data = canvas.toDataURL("image/png");
-      props.data.image = data;
+
+      // TODO:  upload data to server
 
       store.commit("ADD_TOAST", { text: "💾 Drawing saved!" });
     };
@@ -186,7 +187,6 @@ export default defineComponent({
             ctx.drawImage(img, 0, 0);
           };
           img.src = props.data.image;
-          console.log(props.data.image);
         });
       },
     );

@@ -1,17 +1,56 @@
 <template>
   <div
     ref="toast"
-    class="toast absolute top-3 right-0 left-0 z-40 mx-auto bg-bg-dark max-w-3xl h-12 rounded-lg flex items-center justify-center px-11"
+    class="
+      toast
+      absolute
+      top-3
+      right-0
+      left-0
+      z-40
+      mx-auto
+      bg-bg-dark
+      max-w-3xl
+      h-12
+      rounded-lg
+      flex
+      items-center
+      justify-center
+      px-11
+    "
     style="width: 95%"
+    id="toast"
   >
     <p
-      class="text-bg-light text-sm font-semibold opacity-90 overflow-ellipsis overflow-hidden whitespace-nowrap font-mono"
+      class="
+        text-bg-light text-sm
+        font-semibold
+        opacity-90
+        overflow-ellipsis overflow-hidden
+        whitespace-nowrap
+        font-mono
+      "
     >
       {{ text }}
     </p>
     <button
-      class="absolute w-7 h-7 text-bg-light my-auto right-3 focus:outline-none focus:opacity-100 opacity-50 hover:opacity-100 cursor-pointer transition-opacity duration-200"
+      class="
+        absolute
+        w-7
+        h-7
+        text-bg-light
+        my-auto
+        right-3
+        focus:outline-none
+        focus:opacity-100
+        opacity-50
+        hover:opacity-100
+        cursor-pointer
+        transition-opacity
+        duration-200
+      "
       @click="hideToast"
+      id="closeToastBtn"
     >
       <Icon :icon="icons.close" class="w-full h-full" />
     </button>
