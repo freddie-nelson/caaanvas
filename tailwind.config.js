@@ -41,6 +41,10 @@ module.exports = {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
+
+      boxShadow: {
+        highlight: `0px 0px 0px .35rem inset ${colors.pink[300]}`,
+      },
     },
   },
   variants: {

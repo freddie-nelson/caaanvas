@@ -364,9 +364,8 @@ export default defineComponent({
         };
 
         if (component.type === "flag") {
-          component.data.name = `Flag ${Date.now().toString().substring(9)}${
-            Math.random().toString().split(".")[1]
-          }`;
+          component.data.name = `Flag ${Math.random().toString().split(".")[1].substring(3)}`;
+          component.data.color = "#000000";
         }
 
         store.commit("ADD_COMPONENT", component);

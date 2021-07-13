@@ -3,7 +3,7 @@
     ui-element
     v-show="isOptionsVisible"
     ref="optionsElement"
-    class="absolute top-0 left-0 bg-bg-dark rounded-md text-bg-light"
+    class="absolute top-0 left-0 bg-bg-dark rounded-md text-bg-light z-10"
     :style="{
       transform: `scale(${$store.state.canvas.zoom.scale}) translate(${optionsPos.x}px, ${optionsPos.y}px)`,
     }"

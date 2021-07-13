@@ -1,9 +1,36 @@
 <template>
-  <c-tool :open="open" @close-btn="close">
-    <template v-slot:main></template>
+  <c-tool
+    :open="open"
+    @close-btn="close"
+    class="flag border-none rounded-full flex justify-center"
+    :style="{
+      backgroundColor: data.color,
+      boxShadow: `0px 0px 0px 20px ${data.color}90, 0px 0px 0px 40px ${data.color}30`,
+    }"
+  >
+    <template v-slot:main>
+      <Icon class="w-14 h-14 m-8 text-bg-light" :icon="icons.flag" />
+
+      <p
+        class="
+          absolute
+          -bottom-5
+          bg-bg-light
+          border-4
+          rounded-lg
+          whitespace-nowrap
+          font-medium
+          px-1.5
+          py-1
+        "
+        :style="{ borderColor: data.color, color: data.color }"
+      >
+        {{ data.name }}
+      </p>
+    </template>
 
     <template v-slot:open>
-      <label for="url" class="font-medium pb-1 text-lg">Flag Name</label>
+      <label for="name" class="font-medium pb-1 text-lg">Flag Name</label>
       <input
         class="
           text-xl
@@ -25,15 +52,32 @@
       <p v-if="!isNameValid" class="mt-2.5 text-danger-500 font-medium">
         {{ name ? `${name} is already taken.` : "Flag name cannot be empty." }}
       </p>
+
+      <label for="color" class="font-medium pb-1 text-lg mt-3">Color</label>
+      <div class="flex relative">
+        <button
+          v-for="color in colors"
+          :key="color"
+          class="color-btn flex-grow rounded-lg h-14 mr-3 focus:outline-none"
+          :class="color === data.color ? 'shadow-highlight' : ''"
+          :style="{
+            backgroundColor: color,
+          }"
+          @click="data.color = color"
+        ></button>
+      </div>
     </template>
   </c-tool>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
+import { useStore } from "@/store";
 
 import CTool from "@/components/app/Canvas/toolComponents/CTool.vue";
-import { useStore } from "@/store";
+
+import { Icon } from "@iconify/vue";
+import flagIcon from "@iconify-icons/feather/flag";
 
 interface Flag {
   name: string;
@@ -44,6 +88,7 @@ export default defineComponent({
   name: "CToolFlag",
   components: {
     CTool,
+    Icon,
   },
   props: {
     data: {
@@ -91,13 +136,19 @@ export default defineComponent({
         "#3498db",
         "#9b59b6",
         "#f472d0",
-        "white",
-        "black",
+        "#000000",
       ],
+
+      icons: {
+        flag: flagIcon,
+      },
     };
   },
 });
 </script>
 
 <style lang="scss" scoped>
+.color-btn:last-of-type {
+  margin-right: 0;
+}
 </style>
