@@ -10,6 +10,24 @@
       rel="stylesheet"
     />
     <title>Caaanvas</title>
+
+    <script>
+      const htmlElement = document.getElementsByTagName("html")[0];
+
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        htmlElement.classList.add("dark");
+      }
+
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        const newColorScheme = e.matches ? "dark" : "light";
+
+        if (htmlElement.classList.contains("dark") && newColorScheme !== "dark") {
+          htmlElement.classList.remove("dark");
+        } else {
+          htmlElement.classList.add("dark");
+        }
+      });
+    </script>
   </head>
   <body>
     <div id="app"></div>
