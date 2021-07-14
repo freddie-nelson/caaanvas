@@ -44,7 +44,7 @@
           @click="fileInput.click()"
           @dragenter.prevent="highlight = true"
           @dragover.prevent="highlight = true"
-          class="flex flex-col items-center p-12 cursor-pointer"
+          class="flex flex-col items-center p-12 cursor-pointer text-t-main opacity-90"
         >
           <Icon class="w-10 h-10" :icon="icons.upload" />
           <p class="text-2xl font-semibold pt-3 text-center">
@@ -52,9 +52,9 @@
           </p>
         </div>
 
-        <c-button v-if="file && file.name" class="w-48 -mt-6 max-h-14 mx-auto" @click="uploadFile"
-          >Upload</c-button
-        >
+        <c-button v-if="file && file.name" class="w-48 -mt-6 max-h-14 mx-auto" @click="uploadFile">
+          Upload
+        </c-button>
 
         <input
           ref="fileInput"

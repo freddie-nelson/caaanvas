@@ -31,24 +31,12 @@
     </template>
 
     <template v-slot:open>
-      <label for="url" class="font-medium pb-1 text-lg">Link / URL</label>
-      <input
-        class="
-          text-xl
-          font-medium
-          w-full
-          p-3
-          rounded-md
-          bg-transparent
-          border-2 border-b-light
-          transition-colors
-          focus:border-b-dark
-          focus:outline-none
-        "
-        placeholder="http://www.example.com"
-        type="text"
-        name="url"
+      <c-input-text
         v-model="data.url"
+        name="url"
+        placeholder="http://www.example.com"
+        label="Link / URL"
+        class="mt-1.5 p-4 text-lg"
       />
     </template>
   </c-tool>
@@ -58,6 +46,7 @@
 import { defineComponent } from "vue";
 
 import CTool from "@/components/app/Canvas/toolComponents/CTool.vue";
+import CInputText from "@/components/shared/Input/CInputText.vue";
 
 import { Icon } from "@iconify/vue";
 import linkIcon from "@iconify-icons/feather/external-link";
@@ -73,6 +62,7 @@ export default defineComponent({
   components: {
     CTool,
     Icon,
+    CInputText,
   },
   props: {
     data: {

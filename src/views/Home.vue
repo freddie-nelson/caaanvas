@@ -4,6 +4,7 @@
     useWindow
     :brushSize="brushSize"
     :brushColor="brushColor"
+    :bgFill="fill"
     @paint="updateHue"
     class="absolute w-full h-full"
     style="top: 0; left: 0"
@@ -22,9 +23,9 @@
     "
   >
     <c-gradient-heading style="padding-bottom: 0">caaanvas.</c-gradient-heading>
-    <c-sub-heading class="text-center"
-      >An infinite canvas to store all of your ideas and inspiration</c-sub-heading
-    >
+    <c-sub-heading class="text-center">
+      An infinite canvas to store all of your ideas and inspiration
+    </c-sub-heading>
 
     <div class="mt-7 w-full flex justify-between" style="max-width: 21.5rem">
       <c-button-outline class="mr-4" @click="$router.push({ name: 'Login' })">
@@ -37,7 +38,7 @@
   <section class="watermark absolute flex w-auto h-auto justify-between items-center">
     <p class="text-t-sub font-medium">
       made with
-      <icon
+      <Icon
         class="
           heart-icon
           w-4
@@ -97,18 +98,49 @@ export default defineComponent({
     Icon,
   },
   setup() {
+    const store = useStore();
+
     const hue = ref(250);
+    let lowerLimit = 250;
+    let upperLimit = 340;
     let diff = 1;
+
+    const calculateHueLimits = (isDark: boolean) => {
+      if (isDark) {
+        lowerLimit = 15;
+        upperLimit = 55;
+      } else {
+        lowerLimit = 250;
+        upperLimit = 340;
+      }
+
+      hue.value = lowerLimit;
+    };
     const updateHue = () => {
       hue.value += diff;
-      if (hue.value < 250 || hue.value > 340) diff *= -1;
+      if (hue.value < lowerLimit || hue.value > upperLimit) diff *= -1;
     };
 
     const brushColor = computed(() => `hsl(${hue.value}, 83%, 58%)`);
 
-    const store = useStore();
+    const htmlElement = document.getElementsByTagName("html")[0];
+    let isDark = htmlElement.classList.contains("dark");
+    const fill = ref(`${getComputedStyle(htmlElement).getPropertyValue("--bg-light")}36`);
+
+    const htmlObserver = new MutationObserver(() => {
+      if (htmlElement.classList.contains("dark") !== isDark) {
+        isDark = !isDark;
+
+        fill.value = `${getComputedStyle(htmlElement).getPropertyValue("--bg-light")}36`;
+
+        calculateHueLimits(isDark);
+      }
+    });
 
     onMounted(() => {
+      calculateHueLimits(isDark);
+      htmlObserver.observe(htmlElement, { attributes: true });
+
       if (localStorage.getItem("visited")) return;
 
       localStorage.setItem("visited", "true");
@@ -135,6 +167,7 @@ export default defineComponent({
         heart: heartIcon,
       },
       brushColor,
+      fill,
       updateHue,
       brushSize: Math.max(window.innerWidth / 30, 14),
     };

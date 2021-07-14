@@ -26,6 +26,10 @@ export default defineComponent({
       type: Number,
       default: 20,
     },
+    bgFill: {
+      type: String,
+      default: "rgba(255,255,255,0.17)",
+    },
   },
   setup(props, { emit }) {
     const canvas = ref(document.createElement("canvas"));
@@ -70,7 +74,7 @@ export default defineComponent({
 
     const fadeOut = () => {
       ctx = <CanvasRenderingContext2D>ctx;
-      ctx.fillStyle = "rgba(255, 255, 255, 0.17)";
+      ctx.fillStyle = props.bgFill;
       ctx.fillRect(0, 0, canvas.value?.width, canvas.value?.height);
 
       if (canvas.value) setTimeout(fadeOut, 41); // 24 times per second

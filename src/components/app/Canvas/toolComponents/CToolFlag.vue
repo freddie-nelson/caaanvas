@@ -30,30 +30,18 @@
     </template>
 
     <template v-slot:open>
-      <label for="name" class="font-medium pb-1 text-lg">Flag Name</label>
-      <input
-        class="
-          text-xl
-          font-medium
-          w-full
-          p-3
-          rounded-md
-          bg-transparent
-          border-2 border-b-light
-          transition-colors
-          focus:border-b-dark
-          focus:outline-none
-        "
-        placeholder="Flag X"
-        type="text"
-        name="name"
+      <c-input-text
         v-model="name"
+        name="name"
+        placeholder="Flag X"
+        label="Flag Name"
+        class="mt-1.5 p-4 text-lg"
       />
       <p v-if="!isNameValid" class="mt-2.5 text-danger-500 font-medium">
         {{ name ? `${name} is already taken.` : "Flag name cannot be empty." }}
       </p>
 
-      <label for="color" class="font-medium pb-1 text-lg mt-3">Color</label>
+      <label for="color" class="font-medium pb-1 mt-4 text-t-sub">Color</label>
       <div class="flex relative">
         <button
           v-for="color in colors"
@@ -75,6 +63,7 @@ import { computed, defineComponent, ref } from "vue";
 import { useStore } from "@/store";
 
 import CTool from "@/components/app/Canvas/toolComponents/CTool.vue";
+import CInputText from "@/components/shared/Input/CInputText.vue";
 
 import { Icon } from "@iconify/vue";
 import flagIcon from "@iconify-icons/feather/flag";
@@ -88,6 +77,7 @@ export default defineComponent({
   name: "CToolFlag",
   components: {
     CTool,
+    CInputText,
     Icon,
   },
   props: {
