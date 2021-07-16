@@ -118,16 +118,7 @@ export default defineComponent({
       isNameValid,
       close,
 
-      colors: [
-        "#e74c3c",
-        "#e67e22",
-        "#f1c40f",
-        "#2ecc71",
-        "#3498db",
-        "#9b59b6",
-        "#f472d0",
-        "#000000",
-      ],
+      colors: ["#e74c3c", "#e67e22", "#f1c40f", "#2ecc71", "#3498db", "#9b59b6", "#f472d0"],
 
       icons: {
         flag: flagIcon,
