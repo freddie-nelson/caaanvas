@@ -8,7 +8,7 @@
     <div
       v-for="(c, i) in visibleComponents"
       :ref="addRenderedComponent"
-      :key="`${i}-${c.data.name || c.data.title || c.data.image}-${c.data.type}`"
+      :key="c.id"
       :index="`${c.index}`"
       :style="{ transform: `scale(${zoom.scale}) translate(${c.x}px, ${c.y}px)` }"
       class="absolute top-0 left-0"
@@ -339,6 +339,7 @@ export default defineComponent({
           c.y < boundaries.bottom + padding
         ) {
           temp.push({
+            id: c.id,
             type: c.type,
             x: c.x - boundaries.left,
             y: c.y - boundaries.top,
@@ -380,7 +381,10 @@ export default defineComponent({
         const x = e.clientX / zoom.value.scale + boundaries.left;
         const y = e.clientY / zoom.value.scale + boundaries.top;
 
+        const id = `${Math.random().toString().split(".")[1].substring(3)}`;
+
         const component: Component = {
+          id,
           x,
           y,
           type: store.state.canvas.selectedTool.name,
@@ -388,7 +392,7 @@ export default defineComponent({
         };
 
         if (component.type === "flag") {
-          component.data.name = `Flag ${Math.random().toString().split(".")[1].substring(3)}`;
+          component.data.name = `Flag ${id}`;
           component.data.color = "#e74c3c";
         }
 

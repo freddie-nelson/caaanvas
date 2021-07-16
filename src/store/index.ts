@@ -13,6 +13,7 @@ export interface Toast {
 }
 
 export interface Component {
+  id: string;
   type: string;
   x: number;
   y: number;

@@ -3,7 +3,7 @@
     <template v-slot:main>
       <h1 class="text-2xl font-medium" style="min-width: 20rem">
         {{ data.title }}
-        <p v-if="!data.title" class="opacity-40">Your Amazing Title</p>
+        <p v-if="!data.title" class="opacity-40">My Amazing Title</p>
       </h1>
 
       <p
@@ -36,6 +36,9 @@
           border-2 border-transparent
           focus:border-b-dark
           focus:outline-none
+          text-t-sub
+          focus:text-t-main
+          focus:opacity-80
         "
         placeholder="Your Amazing Title"
         type="text"
@@ -55,6 +58,9 @@
           focus:outline-none
           resize-none
           h-full
+          text-t-sub
+          focus:text-t-main
+          focus:opacity-80
         "
         rows="20"
         placeholder="Enter body text here..."
