@@ -8,7 +8,7 @@
     <div
       v-for="(c, i) in visibleComponents"
       :ref="addRenderedComponent"
-      :key="i"
+      :key="`${i}-${c.data.name || c.data.title || c.data.image}-${c.data.type}`"
       :index="`${c.index}`"
       :style="{ transform: `scale(${zoom.scale}) translate(${c.x}px, ${c.y}px)` }"
       class="absolute top-0 left-0"
@@ -350,6 +350,30 @@ export default defineComponent({
 
       return temp;
     });
+
+    // center view around a component
+    const centerAroundComponent = (c: Component) => {
+      const width = boundaries.right - boundaries.left;
+      const height = boundaries.bottom - boundaries.top;
+
+      const offset = 60 * zoom.value.scale;
+
+      boundaries.left = c.x - width / 2 + offset;
+      boundaries.right = c.x + width / 2 + offset;
+      boundaries.top = c.y - height / 2 + offset;
+      boundaries.bottom = c.y + height / 2 + offset;
+    };
+
+    // center around flag when store is changed
+    watch(
+      computed(() => store.state.canvas.flagToFocus),
+      (flag) => {
+        if (!flag) return;
+
+        store.state.canvas.flagToFocus = undefined;
+        centerAroundComponent(flag);
+      },
+    );
 
     const addNewComponent = (e: MouseEvent) => {
       if (store.state.canvas.selectedTool.name) {

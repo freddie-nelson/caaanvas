@@ -69,7 +69,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, ref } from "vue";
+import { defineComponent, ref } from "vue";
 
 import CTool from "@/components/app/Canvas/toolComponents/CTool.vue";
 import CButton from "@/components/shared/Button/CButton.vue";

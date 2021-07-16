@@ -41,7 +41,6 @@
       w-12
       bg-bg-dark
       rounded-md
-      overflow-hidden
     "
     style="height: min-content"
   >

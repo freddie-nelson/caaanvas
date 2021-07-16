@@ -32,7 +32,6 @@ export interface Tool {
 
 export interface Zoom {
   scale: number;
-  factor: number;
   level: number;
 }
 
@@ -41,6 +40,7 @@ export interface CanvasView {
   tools: Tool[];
   zoom: Zoom;
   current: Canvas;
+  flagToFocus?: Component;
 }
 export interface State {
   toastQueue: Toast[];
@@ -62,7 +62,6 @@ const store = createStore<State>({
       zoom: {
         scale: 1,
         level: 100,
-        factor: 5,
       },
       current: {
         title: "Test",
@@ -85,6 +84,10 @@ const store = createStore<State>({
     SET_ZOOM_SCALE(state, scale: number) {
       state.canvas.zoom.scale = scale;
       state.canvas.zoom.level = Math.round(scale * 100);
+    },
+
+    SET_FLAG_TO_FOCUS(state, flag: Component) {
+      state.canvas.flagToFocus = flag;
     },
 
     ADD_COMPONENT(state, component: Component) {

@@ -1,15 +1,14 @@
 <template>
   <c-button-dropdown
-    :show="showZoomMenu"
     @updateShow="showZoomMenu = $event"
     :forceClose="forceCloseMenu"
     tag="zoom-dropdown"
     class="font-mono flex items-center py-4 pl-4 font-medium text-sm text-bg-light"
   >
-    <p class="pointer-events-none">{{ $store.state.canvas.zoom.level }}%</p>
+    <p>{{ $store.state.canvas.zoom.level }}%</p>
 
     <Icon
-      class="pointer-events-none w-4 h-4 ml-1 transform transition-transform focus:rotate-180"
+      class="w-4 h-4 ml-1 transform transition-transform focus:rotate-180"
       :class="{ 'rotate-180': showZoomMenu }"
       :icon="icons.chevronDown"
     />

@@ -73,7 +73,7 @@ module.exports = {
       },
 
       boxShadow: {
-        highlight: `0px 0px 0px .35rem inset ${colors.pink[300]}`,
+        highlight: `0px 0px 0px .35rem inset var(--accent-300)`,
       },
     },
   },

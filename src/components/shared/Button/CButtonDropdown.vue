@@ -1,6 +1,10 @@
 <template>
   <div ref="container" class="relative">
-    <button v-bind="attribute" class="flex items-center focus:outline-none" @click="toggleMenu">
+    <button
+      v-bind="attribute"
+      class="dropdownbutton-show-btn flex items-center focus:outline-none cursor-pointer"
+      @click="toggleMenu"
+    >
       <slot></slot>
     </button>
 
@@ -83,5 +87,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.dropdownbutton-show-btn * {
+  pointer-events: none;
+}
 </style>
