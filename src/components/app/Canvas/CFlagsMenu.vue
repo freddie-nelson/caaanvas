@@ -38,6 +38,10 @@
           {{ f.data.name }}
         </p>
       </button>
+
+      <p v-if="flags.length === 0" class="text-bg-light opacity-60 w-44 p-2 text-center">
+        You haven't placed any flags.
+      </p>
     </template>
   </c-button-dropdown>
 </template>
