@@ -64,6 +64,7 @@ module.exports = {
         "b-highlight": "var(--b-highlight)",
         "input-focus": "var(--input-focus)",
         "input-blur": "var(--input-blur)",
+        "input-light": "var(--input-light)",
       },
 
       borderWidth: ["hover", "focus"],

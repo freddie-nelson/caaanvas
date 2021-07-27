@@ -47,6 +47,7 @@ export default defineComponent({
   --b-highlight: var(--primary-400);
   --input-focus: theme("colors.coolGray.700");
   --input-blur: theme("colors.coolGray.500");
+  --input-light: theme("colors.coolGray.300");
 }
 
 :root.dark {
@@ -79,6 +80,7 @@ export default defineComponent({
   --b-highlight: var(--primary-500);
   --input-focus: theme("colors.warmGray.200");
   --input-blur: theme("colors.warmGray.400");
+  --input-light: theme("colors.warmGray.800");
 }
 
 body {
