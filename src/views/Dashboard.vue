@@ -1,13 +1,19 @@
 <template>
-  <main class="bg-bg-light w-full h-full"></main>
+  <main class="bg-bg-light w-full h-full">
+    <c-nav-bar />
+  </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import CNavBar from "@/components/app/Dashboard/Nav/CNavBar.vue";
+
 export default defineComponent({
   name: "Dashboard",
-  components: {},
+  components: {
+    CNavBar,
+  },
 });
 </script>
 
