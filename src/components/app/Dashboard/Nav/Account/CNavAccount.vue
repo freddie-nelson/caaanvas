@@ -49,7 +49,7 @@
 
     <Icon
       :icon="icons.chevronDown"
-      class="ml-2 w-6 h-6 transform transition-transform duration-300"
+      class="ml-2 w-6 h-6 transform transition-transform duration-300 text-t-main"
       :class="{ 'rotate-180': showAccountMenu }"
     />
 
