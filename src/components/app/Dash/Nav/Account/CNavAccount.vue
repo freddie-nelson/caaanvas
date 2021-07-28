@@ -58,13 +58,19 @@
         New Canvas
       </c-account-button>
 
-      <router-link to="/dashboard">
+      <router-link to="/dash">
         <c-account-button bgClass="bg-bg-light" textClass="text-bg-light" :icon="icons.dashboard">
-          Dashboard
+          Canvases
         </c-account-button>
       </router-link>
 
-      <router-link to="/settings">
+      <router-link to="/dash/profile">
+        <c-account-button bgClass="bg-bg-light" textClass="text-bg-light" :icon="icons.profile">
+          Profile
+        </c-account-button>
+      </router-link>
+
+      <router-link to="/dash/settings">
         <c-account-button bgClass="bg-bg-light" textClass="text-bg-light" :icon="icons.settings">
           Settings
         </c-account-button>
@@ -87,6 +93,7 @@ import { Icon } from "@iconify/vue";
 import chevronDownIcon from "@iconify-icons/feather/chevron-down";
 import logOutIcon from "@iconify-icons/feather/log-out";
 import dashboardIcon from "@iconify-icons/feather/layout";
+import profileIcon from "@iconify-icons/feather/user";
 import settingsIcon from "@iconify-icons/feather/settings";
 import canvasIcon from "@iconify-icons/feather/edit";
 
@@ -109,6 +116,7 @@ export default defineComponent({
         chevronDown: chevronDownIcon,
         logOut: logOutIcon,
         dashboard: dashboardIcon,
+        profile: profileIcon,
         settings: settingsIcon,
         canvas: canvasIcon,
       },

@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 import { Icon } from "@iconify/vue";
 import searchIcon from "@iconify-icons/feather/search";
@@ -43,9 +44,13 @@ export default defineComponent({
     Icon,
   },
   setup() {
+    const route = useRoute();
+    const router = useRouter();
+
     const searchTerm = ref("");
     const search = () => {
-      console.log(searchTerm.value);
+      // redirect to canvases before searching so user can see search result
+      if (route.name !== "DashCanvases") router.push({ name: "DashCanvases" });
     };
 
     return {

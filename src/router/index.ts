@@ -3,7 +3,10 @@ import Home from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Canvas from "@/views/Canvas.vue";
-import Dashboard from "@/views/Dashboard.vue";
+import Dash from "@/views/Dash/Root.vue";
+import DashCanvases from "@/views/Dash/Canvases.vue";
+import DashSettings from "@/views/Dash/Settings.vue";
+import DashProfile from "@/views/Dash/Profile.vue";
 
 const routes = [
   {
@@ -27,9 +30,26 @@ const routes = [
     component: Canvas,
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
+    path: "/dash",
+    name: "Dash",
+    component: Dash,
+    children: [
+      {
+        path: "",
+        name: "DashCanvases",
+        component: DashCanvases,
+      },
+      {
+        path: "settings",
+        name: "DashSettings",
+        component: DashSettings,
+      },
+      {
+        path: "profile",
+        name: "DashProfile",
+        component: DashProfile,
+      },
+    ],
   },
 ];
 
