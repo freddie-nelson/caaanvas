@@ -54,13 +54,21 @@
     />
 
     <template v-slot:menu>
-      <c-account-button bgClass="bg-bg-light" textClass="text-bg-light" :icon="icons.canvas">
+      <c-account-button bgClass="bg-success-500" textClass="text-success-600" :icon="icons.canvas">
         New Canvas
       </c-account-button>
 
-      <c-account-button bgClass="bg-bg-light" textClass="text-bg-light" :icon="icons.settings">
-        Settings
-      </c-account-button>
+      <router-link to="/dashboard">
+        <c-account-button bgClass="bg-bg-light" textClass="text-bg-light" :icon="icons.dashboard">
+          Dashboard
+        </c-account-button>
+      </router-link>
+
+      <router-link to="/settings">
+        <c-account-button bgClass="bg-bg-light" textClass="text-bg-light" :icon="icons.settings">
+          Settings
+        </c-account-button>
+      </router-link>
 
       <c-account-button bgClass="bg-danger-500" textClass="text-danger-600" :icon="icons.logOut">
         Log Out
@@ -78,6 +86,7 @@ import CAccountButton from "./CAccountButton.vue";
 import { Icon } from "@iconify/vue";
 import chevronDownIcon from "@iconify-icons/feather/chevron-down";
 import logOutIcon from "@iconify-icons/feather/log-out";
+import dashboardIcon from "@iconify-icons/feather/layout";
 import settingsIcon from "@iconify-icons/feather/settings";
 import canvasIcon from "@iconify-icons/feather/edit";
 
@@ -99,6 +108,7 @@ export default defineComponent({
       icons: {
         chevronDown: chevronDownIcon,
         logOut: logOutIcon,
+        dashboard: dashboardIcon,
         settings: settingsIcon,
         canvas: canvasIcon,
       },

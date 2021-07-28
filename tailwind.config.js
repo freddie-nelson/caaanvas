@@ -51,6 +51,7 @@ module.exports = {
 
         transparent: "transparent",
         danger: colors.red,
+        success: colors.green,
 
         coolGray: colors.coolGray,
         warmGray: colors.warmGray,
