@@ -5,16 +5,21 @@
   <main class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col">
     <c-gradient-heading :size="6" noscale>Register</c-gradient-heading>
     <form class="max-w-xl w-full px-4 mt-6 flex flex-col" @submit.prevent>
-      <c-input-text name="username" placeholder="johnsmith17" label="Username" v-model="username" />
       <c-input-text
-        class="mt-4"
+        name="username"
+        placeholder="johnsmith17"
+        label="Username"
+        v-model="username"
+        class="mb-4"
+      />
+      <c-input-text
         name="email"
         placeholder="john@example.com"
         label="Email"
         v-model="email"
+        class="mb-4"
       />
       <c-input-password
-        class="mt-4"
         name="password"
         label="Password"
         placeholder="securepassword123"
