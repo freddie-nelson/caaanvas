@@ -36,7 +36,7 @@
           relative
           group
         "
-        @click="$router.push({ name: 'Dashboard' })"
+        @click="$router.push({ name: 'Dash' })"
       >
         <div
           class="

@@ -1,5 +1,5 @@
 <template>
-  <nav class="px-6 h-20 w-full relative flex items-center justify-between">
+  <nav class="px-6 h-20 w-full relative flex items-center justify-between mb-0.5">
     <div class="absolute left-0 -bottom-0.5 w-full h-0.5 opacity-20 bg-bg-dark"></div>
 
     <router-link to="/">

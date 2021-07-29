@@ -2,7 +2,7 @@
   <main class="bg-bg-light w-full h-full">
     <c-nav />
 
-    <router-view />
+    <router-view class="max-w-7xl w-full mx-auto py-20 px-10" />
   </main>
 </template>
 

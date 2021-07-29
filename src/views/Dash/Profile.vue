@@ -1,13 +1,19 @@
 <template>
-  <section></section>
+  <section>
+    <c-profile-info />
+  </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import CProfileInfo from "@/components/app/Dash/Profile/Info/CProfileInfo.vue";
+
 export default defineComponent({
   name: "DashProfile",
-  components: {},
+  components: {
+    CProfileInfo,
+  },
 });
 </script>
 
