@@ -7,6 +7,8 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@fontsource/poppins": "^4.5.0",
+    "@fontsource/roboto-mono": "^4.5.0",
     "vue": "^3.0.5",
     "vue-router": "4",
     "vuex": "^4.0.1"

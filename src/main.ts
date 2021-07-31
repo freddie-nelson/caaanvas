@@ -1,14 +1,28 @@
-import { createApp } from "vue"
-import App from "./App.vue"
+import { createApp } from "vue";
+import App from "./App.vue";
 
-import "./css/index.css"
+// import fonts
+import "@fontsource/poppins/300.css";
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/500.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
+import "@fontsource/poppins/800.css";
 
-const app = createApp(App)
+import "@fontsource/roboto-mono/300.css";
+import "@fontsource/roboto-mono/400.css";
+import "@fontsource/roboto-mono/500.css";
+import "@fontsource/roboto-mono/600.css";
 
-import router from "@/router"
-app.use(router)
+// import tailwind
+import "./css/index.css";
 
-import store from "@/store"
-app.use(store)
+const app = createApp(App);
 
-app.mount("#app")
+import router from "@/router";
+app.use(router);
+
+import store from "@/store";
+app.use(store);
+
+app.mount("#app");
