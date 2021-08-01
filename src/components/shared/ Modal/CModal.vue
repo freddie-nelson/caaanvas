@@ -1,0 +1,71 @@
+<template>
+  <v-teleport to="#modals">
+    <div
+      class="
+        absolute
+        top-0
+        left-0
+        w-full
+        h-full
+        flex
+        justify-center
+        items-center
+        bg-black bg-opacity-50
+      "
+    >
+      <section class="p-12 rounded-xl relative bg-bg-dark">
+        <button
+          v-if="closeable"
+          class="
+            absolute
+            top-3
+            right-3
+            w-7
+            h-7
+            text-bg-light
+            hover:text-primary-500
+            transition-colors
+            duration-300
+          "
+          @click="$emit('close')"
+        >
+          <Icon class="w-full h-full" :icon="icons.close" />
+        </button>
+
+        <slot></slot>
+      </section>
+    </div>
+  </v-teleport>
+</template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+
+import { Icon } from "@iconify/vue";
+import closeIcon from "@iconify-icons/feather/x";
+
+// TODO bind styles/classes applied to modal to section node
+
+export default defineComponent({
+  name: "CModal",
+  components: {
+    Icon,
+  },
+  props: {
+    closeable: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup() {
+    return {
+      icons: {
+        close: closeIcon,
+      },
+    };
+  },
+});
+</script>
+
+<style lang="scss" scoped>
+</style>
