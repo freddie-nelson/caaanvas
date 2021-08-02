@@ -46,9 +46,15 @@ export default defineComponent({
   --b-light: theme("colors.coolGray.400");
   --b-dark: theme("colors.coolGray.600");
   --b-highlight: var(--primary-400);
+  --b-light-dark: theme("colors.coolGray.500");
+  --b-dark-dark: theme("colors.coolGray.700");
+  --b-highlight-dark: var(--primary-500);
   --input-focus: theme("colors.coolGray.700");
   --input-blur: theme("colors.coolGray.500");
   --input-light: theme("colors.coolGray.300");
+  --input-focus-dark: theme("colors.coolGray.200");
+  --input-blur-dark: theme("colors.coolGray.400");
+  --input-light-dark: theme("colors.coolGray.600");
 }
 
 :root.dark {
@@ -79,9 +85,15 @@ export default defineComponent({
   --b-light: theme("colors.warmGray.500");
   --b-dark: theme("colors.warmGray.300");
   --b-highlight: var(--primary-500);
+  --b-light-dark: theme("colors.warmGray.400");
+  --b-dark-dark: theme("colors.warmGray.600");
+  --b-highlight-dark: var(--primary-400);
   --input-focus: theme("colors.warmGray.200");
   --input-blur: theme("colors.warmGray.400");
   --input-light: theme("colors.warmGray.800");
+  --input-focus-dark: theme("colors.warmGray.700");
+  --input-blur-dark: theme("colors.warmGray.500");
+  --input-light-dark: theme("colors.warmGray.100");
 }
 
 body {

@@ -4,14 +4,11 @@
     <input
       v-bind="$attrs"
       class="
-        bg-bg-light
         w-full
         block
         p-3
         border-solid border-2
         rounded-lg
-        text-input-blur
-        focus:text-input-focus
         border-b-light
         focus:outline-none
         focus:border-b-highlight
@@ -23,6 +20,11 @@
       :placeholder="placeholder"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
+      :class="
+        dark
+          ? 'bg-bg-dark text-input-blur-dark focus:text-input-focus-dark border-b-light-dark focus:border-b-highlight-dark'
+          : 'bg-bg-light text-input-blur focus:text-input-focus'
+      "
     />
   </div>
 </template>
@@ -52,6 +54,10 @@ export default defineComponent({
       default: "",
     },
     censor: {
+      type: Boolean,
+      default: false,
+    },
+    dark: {
       type: Boolean,
       default: false,
     },

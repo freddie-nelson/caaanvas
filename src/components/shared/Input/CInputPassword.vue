@@ -6,6 +6,7 @@
       :placeholder="placeholder"
       v-model="value"
       :censor="censor"
+      :dark="dark"
     />
     <c-button-text class="self-end" type="button" @click="censor = !censor">
       {{ censor ? "show characters" : "hide characters" }}
@@ -41,6 +42,10 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: "",
+    },
+    dark: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props, { emit }) {
