@@ -1,5 +1,5 @@
 <template>
-  <v-teleport to="#modals">
+  <teleport to="#modals">
     <div
       class="
         absolute
@@ -13,7 +13,7 @@
         bg-black bg-opacity-50
       "
     >
-      <section class="p-12 rounded-xl relative bg-bg-dark">
+      <section v-bind="$attrs" class="p-12 rounded-xl relative bg-bg-dark">
         <button
           v-if="closeable"
           class="
@@ -35,7 +35,7 @@
         <slot></slot>
       </section>
     </div>
-  </v-teleport>
+  </teleport>
 </template>
 
 <script lang="ts">
@@ -44,10 +44,9 @@ import { defineComponent } from "vue";
 import { Icon } from "@iconify/vue";
 import closeIcon from "@iconify-icons/feather/x";
 
-// TODO bind styles/classes applied to modal to section node
-
 export default defineComponent({
   name: "CModal",
+  inheritAttrs: false,
   components: {
     Icon,
   },
