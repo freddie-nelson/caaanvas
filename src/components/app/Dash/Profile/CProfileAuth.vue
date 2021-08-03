@@ -1,5 +1,5 @@
 <template>
-  <section class="text-t-main mt-10">
+  <section class="text-t-main mt-12">
     <h1 class="text-3xl font-bold mb-5">Password and Authentication</h1>
 
     <c-button @click="showChangePasswordModal = true">Change Password</c-button>
