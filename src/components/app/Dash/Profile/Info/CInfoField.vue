@@ -38,7 +38,7 @@
 import { defineComponent, ref } from "vue";
 
 import CButton from "@/components/shared/Button/CButton.vue";
-import CModal from "@/components/shared/ Modal/CModal.vue";
+import CModal from "@/components/shared/Modal/CModal.vue";
 import CInputText from "@/components/shared/Input/CInputText.vue";
 import CInputPassword from "@/components/shared/Input/CInputPassword.vue";
 
