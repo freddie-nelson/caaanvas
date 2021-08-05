@@ -9,15 +9,15 @@
 
     <button
       :class="checked ? 'bg-accent-500' : 'bg-t-sub'"
-      class="rounded-full w-20 h-10 border-4 border-t-sub focus:outline-none flex transition-colors"
+      class="rounded-full w-18 h-9 focus:outline-none flex transition-colors"
       @click="
         checked = !checked;
         $emit('update:modelValue', checked);
       "
     >
       <div
-        :class="checked ? ' translate-x-10' : ''"
-        class="rounded-full bg-bg-light w-8 h-full transform transition-transform"
+        :class="checked ? ' translate-x-9' : ''"
+        class="rounded-full bg-bg-light w-7 h-7 my-auto mx-1 transform transition-transform"
       ></div>
     </button>
   </div>

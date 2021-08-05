@@ -83,6 +83,10 @@ module.exports = {
       boxShadow: {
         highlight: `0px 0px 0px .3rem inset var(--bg-dark)`,
       },
+
+      width: {
+        18: "4.5rem",
+      },
     },
   },
   variants: {
