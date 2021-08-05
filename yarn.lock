@@ -2559,6 +2559,11 @@ vue-tsc@^0.0.24:
   dependencies:
     unzipper "0.10.11"
 
+vue3-slider@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/vue3-slider/-/vue3-slider-1.6.5.tgz#e76bf4be73b86a31c213bc09ed8514ebde1bd3a7"
+  integrity sha512-cwJumLOjYlh4ZM9ZXiFUNVelV1DvGiaRZJ88ltvHoAo/zty+BdokSxi8rsBV8oSn1S5afEZtbb62s6uJ1yUeUw==
+
 vue@^3.0.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.1.5.tgz#12879b11d0685ee4478c8869551799630a52f9fe"
