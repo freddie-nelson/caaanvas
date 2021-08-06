@@ -3,7 +3,7 @@
     ref="toast"
     class="
       toast
-      absolute
+      fixed
       top-3
       right-0
       left-0
@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 
 import { Icon } from "@iconify/vue";
 import closeIcon from "@iconify-icons/feather/x";
@@ -73,15 +73,29 @@ export default defineComponent({
       type: String,
       default: "This is some example text.",
     },
+    duration: {
+      type: Number,
+      default: undefined,
+    },
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const toast = ref(document.createElement("div"));
 
     const hideToast = () => {
+      if (!toast.value || toast.value.classList.contains("exit")) return;
+
       toast.value.classList.add("exit");
       emit("close");
       setTimeout(() => emit("slide-out"), 600);
     };
+
+    onMounted(() => {
+      if (props.duration) {
+        setTimeout(() => {
+          hideToast();
+        }, props.duration);
+      }
+    });
 
     return {
       toast,

@@ -1,5 +1,10 @@
 <template>
-  <c-toast v-if="showToast" :text="currentToast.text" @slide-out="removeToast" />
+  <c-toast
+    v-if="showToast"
+    :text="currentToast.text"
+    :duration="currentToast.duration"
+    @slide-out="removeToast"
+  />
 </template>
 
 <script lang="ts">
