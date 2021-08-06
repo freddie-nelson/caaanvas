@@ -44,6 +44,16 @@
         </div>
       </c-settings-setting>
     </c-settings-group>
+
+    <c-settings-group title="Notifications">
+      <c-settings-setting name="Desktop Notifications">
+        <c-input-toggle v-model="allowDesktopNotifications" />
+      </c-settings-setting>
+
+      <c-settings-setting name="Email Alerts">
+        <c-input-toggle v-model="allowEmailAlerts" />
+      </c-settings-setting>
+    </c-settings-group>
   </section>
 </template>
 
@@ -55,6 +65,7 @@ import CInputToggle from "@/components/shared/Input/CInputToggle.vue";
 import CSettingsGroup from "@/components/app/Dash/Settings/CSettingsGroup.vue";
 import CSettingsSetting from "@/components/app/Dash/Settings/CSettingsSetting.vue";
 import CInputRange from "@/components/shared/Input/CInputRange.vue";
+import { useStore } from "@/store";
 
 export default defineComponent({
   name: "DashSettings",
@@ -66,6 +77,9 @@ export default defineComponent({
     CInputRange,
   },
   setup() {
+    const store = useStore();
+
+    // Appearance Settings
     const darkMode = ref(false);
 
     const uiScale = ref(1);
@@ -85,11 +99,41 @@ export default defineComponent({
       scaleContainer.value.children[i]?.classList.add("selected");
     });
 
+    // Notfications Settings
+    const allowDesktopNotifications = ref(false);
+
+    watch(allowDesktopNotifications, async (allow) => {
+      if (allow) {
+        if (!("Notification" in window)) {
+          store.commit("ADD_TOAST", {
+            text: "🚫 Your browser does not support notifications.",
+            duration: 3000,
+          });
+        }
+
+        const permission = await Notification.requestPermission();
+
+        if (permission === "denied") {
+          store.commit("ADD_TOAST", {
+            text: "🚫 Could not activate desktop notifications.",
+            duration: 3000,
+          });
+
+          setTimeout(() => (allowDesktopNotifications.value = false), 400);
+        }
+      }
+    });
+
+    const allowEmailAlerts = ref(false);
+
     return {
       darkMode,
 
       uiScale,
       scaleContainer,
+
+      allowDesktopNotifications,
+      allowEmailAlerts,
     };
   },
 });
