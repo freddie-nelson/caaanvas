@@ -76,7 +76,13 @@
         </c-account-button>
       </router-link>
 
-      <c-account-button bgClass="bg-danger-500" textClass="text-danger-600" :icon="icons.logOut">
+      <router-link to="/dash/plans">
+        <c-account-button bgClass="bg-yellow-600" textClass="text-yellow-600" :icon="icons.upgrade">
+          Upgrade
+        </c-account-button>
+      </router-link>
+
+      <c-account-button bgClass="bg-danger-600" textClass="text-danger-600" :icon="icons.logOut">
         Log Out
       </c-account-button>
     </template>
@@ -95,6 +101,7 @@ import logOutIcon from "@iconify-icons/feather/log-out";
 import dashboardIcon from "@iconify-icons/feather/layout";
 import profileIcon from "@iconify-icons/feather/user";
 import settingsIcon from "@iconify-icons/feather/settings";
+import upgradeIcon from "@iconify-icons/feather/star";
 import canvasIcon from "@iconify-icons/feather/edit";
 
 export default defineComponent({
@@ -118,6 +125,7 @@ export default defineComponent({
         dashboard: dashboardIcon,
         profile: profileIcon,
         settings: settingsIcon,
+        upgrade: upgradeIcon,
         canvas: canvasIcon,
       },
     };

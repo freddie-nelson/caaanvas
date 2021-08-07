@@ -7,6 +7,7 @@ import Dash from "@/views/Dash/Root.vue";
 import DashCanvases from "@/views/Dash/Canvases.vue";
 import DashSettings from "@/views/Dash/Settings.vue";
 import DashProfile from "@/views/Dash/Profile.vue";
+import DashPlans from "@/views/Dash/Plans.vue";
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
         path: "profile",
         name: "DashProfile",
         component: DashProfile,
+      },
+      {
+        path: "plans",
+        name: "DashPlans",
+        component: DashPlans,
       },
     ],
   },
