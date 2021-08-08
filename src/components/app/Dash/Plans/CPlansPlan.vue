@@ -5,54 +5,68 @@
       items-center
       justify-center
       rounded-2xl
-      border-4
+      border-8
       p-14
       w-full
       max-w-md
       bg-bg-light
+      m-auto
     "
     :class="{ [`border-${borderColor}`]: true }"
   >
-    <Icon class="w-14 h-14" :class="{ [`text-${borderColor}`]: true }" :icon="icon" />
+    <h2 class="text-5xl font-bold text-t-main">{{ name }}</h2>
 
-    <ul
-      class="list-none flex flex-col items-center mt-9 font-semibold text-xl"
-      :class="{ [`text-${borderColor}`]: true }"
-    >
-      <li class="py-2 flex items-center" v-for="(feature, i) in features" :key="i">
-        <!-- <div
-          v-if="feature"
-          class="w-7 h-7 mr-2.5 rounded-full"
-          :class="{ [`bg-${borderColor}`]: true }"
-        >
-          <Icon class="w-full h-full p-1 text-bg-light" :icon="icons.tick" />
-        </div> -->
-        {{ feature }}
+    <div class="my-5 flex flex-col items-center gradient-">
+      <c-gradient-heading direction="t" :size="7" noscale>${{ price }}</c-gradient-heading>
+      <p class="-mt-1 text-xl font-bold">per month</p>
+    </div>
+
+    <ul class="list-none mt-3 mb-8 font-bold text-2xl" :class="{ [`text-${borderColor}`]: true }">
+      <li class="py-3 flex items-center" v-for="(feature, i) in features" :key="i">
+        <div>
+          <Icon v-if="feature" class="w-9 h-9 mr-3" :icon="icons.tick" />
+        </div>
+
+        <p>{{ feature }}</p>
       </li>
     </ul>
+
+    <c-button-outline v-if="!filledBtn" class="w-full font-bold">
+      {{ buttonText }}
+    </c-button-outline>
+
+    <c-button v-else class="w-full font-bold">
+      {{ buttonText }}
+    </c-button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
+import CButton from "@/components/shared/Button/CButton.vue";
+import CButtonOutline from "@/components/shared/Button/CButtonOutline.vue";
+
 import { Icon } from "@iconify/vue";
-import freeIcon from "@iconify-icons/feather/edit-2";
-import tickIcon from "@iconify-icons/feather/check";
+import tickIcon from "@iconify-icons/feather/check-circle";
 
 export default defineComponent({
   name: "CPlansPlan",
   components: {
     Icon,
+    CGradientHeading,
+    CButton,
+    CButtonOutline,
   },
   props: {
+    name: {
+      type: String,
+      default: "Standard",
+    },
     borderColor: {
       type: String,
       default: "t-sub",
-    },
-    icon: {
-      type: Object,
-      default: freeIcon,
     },
     price: {
       type: String,
@@ -60,7 +74,15 @@ export default defineComponent({
     },
     features: {
       type: Array as () => String[],
-      default: ["5 Canvases", "100 items per canvas", "", "", ""],
+      default: ["5 Canvases", "50 items per canvas"],
+    },
+    filledBtn: {
+      type: Boolean,
+      default: false,
+    },
+    buttonText: {
+      type: String,
+      default: "Subscribe",
     },
   },
   setup() {

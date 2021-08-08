@@ -1,7 +1,12 @@
 <template>
   <h1
-    class="pb-2 font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-accent-500"
-    :class="noscale ? `text-${size}xl` : `text-${Math.ceil(size - size / 4)}xl md:text-${size}xl`"
+    class="pb-2 font-bold bg-clip-text text-transparent from-primary-600 to-accent-500"
+    :class="
+      'bg-gradient-to-' +
+      direction +
+      ' ' +
+      (noscale ? `text-${size}xl` : `text-${Math.ceil(size - size / 4)}xl md:text-${size}xl`)
+    "
   >
     <slot></slot>
   </h1>
@@ -21,6 +26,10 @@ export default defineComponent({
     noscale: {
       type: Boolean,
       default: false,
+    },
+    direction: {
+      type: String,
+      default: "r",
     },
   },
 });

@@ -1,11 +1,23 @@
 <template>
   <section>
-    <c-gradient-heading style="width: 5ch" :size="6" noscale>Plans</c-gradient-heading>
+    <div class="grid grid-cols-3 gap-8 mt-10">
+      <c-plans-plan name="Starter" price="0" :features="['5 Canvases', '50 items per canvas']" />
 
-    <div class="grid grid-cols-3 gap-10 mt-10">
-      <c-plans-plan />
-      <c-plans-plan class="transform scale-110 z-10" borderColor="accent-500" />
-      <c-plans-plan borderColor="primary-500" />
+      <c-plans-plan
+        name="Premium"
+        price="5"
+        :features="['20 Canvases', '200 items per canvas', 'More Themes']"
+        borderColor="primary-500"
+      />
+
+      <c-plans-plan
+        class="transform z-10"
+        name="Ultimate"
+        price="10"
+        :features="['100 Canvases', '1000 items per canvas', 'More Themes', 'Offline Access']"
+        borderColor="accent-500"
+        filledBtn
+      />
     </div>
   </section>
 </template>
