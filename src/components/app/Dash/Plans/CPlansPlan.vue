@@ -11,17 +11,18 @@
       max-w-md
       bg-bg-light
       m-auto
+      text-t-main
     "
     :class="{ [`border-${borderColor}`]: true }"
   >
-    <h2 class="text-5xl font-bold text-t-main">{{ name }}</h2>
+    <h2 class="text-5xl font-bold">{{ name }}</h2>
 
-    <div class="my-5 flex flex-col items-center gradient-">
+    <div class="my-6 flex flex-col items-center gradient-">
       <c-gradient-heading direction="t" :size="7" noscale>${{ price }}</c-gradient-heading>
       <p class="-mt-1 text-xl font-bold">per month</p>
     </div>
 
-    <ul class="list-none mt-3 mb-8 font-bold text-2xl" :class="{ [`text-${borderColor}`]: true }">
+    <ul class="list-none mb-8 font-bold text-2xl" :class="{ [`text-${borderColor}`]: true }">
       <li class="py-3 flex items-center" v-for="(feature, i) in features" :key="i">
         <div>
           <Icon v-if="feature" class="w-9 h-9 mr-3" :icon="icons.tick" />
