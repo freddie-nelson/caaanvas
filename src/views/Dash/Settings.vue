@@ -82,7 +82,16 @@ export default defineComponent({
     const store = useStore();
 
     // Appearance Settings
-    const themes = ["light", "dark", "solarized"];
+    const themes = [
+      "light",
+      "dark",
+      "solarized",
+      "aether",
+      "dracula",
+      "horizon",
+      "midnight",
+      "paper",
+    ];
     const theme = ref("light");
 
     const uiScale = ref(1);

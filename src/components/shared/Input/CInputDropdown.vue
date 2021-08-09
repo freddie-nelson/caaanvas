@@ -17,7 +17,7 @@
     >
       <p
         class="text-left transition-all duration-300"
-        :style="{ width: isOpen ? maxOptionWidth : visibleOptionWidth }"
+        :style="{ marginRight: isOpen ? `calc(${maxOptionWidth} - ${visibleOptionWidth})` : '0' }"
       >
         {{ modelValue }}
       </p>
@@ -47,6 +47,7 @@
           transition-all
           overflow-y-scroll
         "
+        style="max-height: calc(2.5rem * 6)"
         :style="{ height: `calc(2.5rem * ${options.length - 1} + 1rem)` }"
       >
         <button
