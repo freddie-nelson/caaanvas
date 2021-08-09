@@ -17,7 +17,7 @@
   >
     <h2 class="text-5xl font-bold">{{ name }}</h2>
 
-    <div class="my-6 flex flex-col items-center gradient-">
+    <div class="my-6 flex flex-col items-center">
       <c-gradient-heading direction="t" :size="7" noscale>${{ price }}</c-gradient-heading>
       <p class="-mt-1 text-xl font-bold">per month</p>
     </div>

@@ -3,8 +3,8 @@
     <c-gradient-heading style="width: 8ch" :size="6" noscale>Settings</c-gradient-heading>
 
     <c-settings-group title="Appearance">
-      <c-settings-setting name="Dark Mode">
-        <c-input-toggle v-model="darkMode" />
+      <c-settings-setting name="Theme">
+        <c-input-dropdown v-model="theme" :options="themes" />
       </c-settings-setting>
 
       <c-settings-setting name="UI Scale">
@@ -59,13 +59,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from "vue";
+import { useStore } from "@/store";
 
 import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
 import CInputToggle from "@/components/shared/Input/CInputToggle.vue";
 import CSettingsGroup from "@/components/app/Dash/Settings/CSettingsGroup.vue";
 import CSettingsSetting from "@/components/app/Dash/Settings/CSettingsSetting.vue";
 import CInputRange from "@/components/shared/Input/CInputRange.vue";
-import { useStore } from "@/store";
+import CInputDropdown from "@/components/shared/Input/CInputDropdown.vue";
 
 export default defineComponent({
   name: "DashSettings",
@@ -75,12 +76,14 @@ export default defineComponent({
     CSettingsGroup,
     CSettingsSetting,
     CInputRange,
+    CInputDropdown,
   },
   setup() {
     const store = useStore();
 
     // Appearance Settings
-    const darkMode = ref(false);
+    const themes = ["light", "dark", "solarized"];
+    const theme = ref("light");
 
     const uiScale = ref(1);
     const scaleContainer = ref(document.createElement("div"));
@@ -127,7 +130,8 @@ export default defineComponent({
     const allowEmailAlerts = ref(false);
 
     return {
-      darkMode,
+      themes,
+      theme,
 
       uiScale,
       scaleContainer,
