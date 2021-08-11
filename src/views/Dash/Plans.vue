@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="grid grid-cols-3 gap-8 mt-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
       <c-plans-plan name="Starter" price="0" :features="['5 Canvases', '50 items per canvas']" />
 
       <c-plans-plan

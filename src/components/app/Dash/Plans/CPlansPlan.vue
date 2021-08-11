@@ -6,13 +6,15 @@
       justify-center
       rounded-2xl
       border-8
-      p-14
+      p-9
+      xl:p-14
       w-full
       max-w-md
       bg-bg-light
       m-auto
       text-t-main
     "
+    style="min-width: 20rem"
     :class="{ [`border-${borderColor}`]: true }"
   >
     <h2 class="text-5xl font-bold">{{ name }}</h2>
