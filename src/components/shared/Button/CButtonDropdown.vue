@@ -17,6 +17,7 @@
         [flip ? 'bottom' : 'top']: `${(flip ? menuBottom : menuTop) + 3}px`,
       }"
       class="absolute bg-t-main px-4 py-2.5 rounded-md"
+      :class="menuClasses"
     >
       <slot name="menu"></slot>
     </div>
@@ -42,6 +43,10 @@ export default defineComponent({
     flip: {
       type: Boolean,
       default: false,
+    },
+    menuClasses: {
+      type: String,
+      default: "",
     },
   },
   setup(props, { emit }) {

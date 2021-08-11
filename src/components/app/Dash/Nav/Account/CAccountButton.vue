@@ -11,8 +11,8 @@
       focus:outline-none
       rounded-sm
       my-2
-      relative
       group
+      relative
     "
   >
     <div

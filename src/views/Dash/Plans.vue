@@ -11,7 +11,6 @@
       />
 
       <c-plans-plan
-        class="transform z-10"
         name="Ultimate"
         price="10"
         :features="['100 Canvases', '1000 items per canvas', 'More Themes', 'Offline Access']"
