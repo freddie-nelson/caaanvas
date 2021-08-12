@@ -4,7 +4,7 @@
   </router-link>
   <main class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col">
     <c-gradient-heading :size="6" noscale>Register</c-gradient-heading>
-    <form class="max-w-xl w-full px-4 mt-6 flex flex-col" @submit.prevent>
+    <form class="max-w-xl w-full px-4 mt-6 flex flex-col" @submit.prevent="register">
       <c-input-text
         name="username"
         placeholder="johnsmith17"
@@ -32,7 +32,7 @@
         v-model="confirmPassword"
       />
 
-      <c-button class="w-full mt-7">Create Account</c-button>
+      <c-button class="w-full mt-7" type="submit">Create Account</c-button>
       <c-button-text class="self-end mt-2" @click="$router.push({ name: 'Login' })">
         Already have an account?
       </c-button-text>
@@ -48,9 +48,11 @@ import CInputText from "@/components/shared/Input/CInputText.vue";
 import CInputPassword from "@/components/shared/Input/CInputPassword.vue";
 import CButton from "@/components/shared/Button/CButton.vue";
 import CButtonText from "@/components/shared/Button/CButtonText.vue";
+import { validateRegisterForm } from "@/utils/validateInput";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "@firebase/auth";
 
 export default defineComponent({
-  name: "Login",
+  name: "Register",
   components: {
     CGradientHeading,
     CInputText,
@@ -59,16 +61,33 @@ export default defineComponent({
     CButtonText,
   },
   setup() {
+    const auth = getAuth();
+
     const username = ref("");
     const email = ref("");
     const password = ref("");
     const confirmPassword = ref("");
+
+    const register = async () => {
+      if (!validateRegisterForm(username.value, email.value, password.value, confirmPassword.value))
+        return;
+
+      try {
+        const credential = await createUserWithEmailAndPassword(auth, email.value, password.value);
+        console.log(credential);
+        await updateProfile(credential.user, { displayName: username.value });
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     return {
       username,
       email,
       password,
       confirmPassword,
+
+      register,
     };
   },
 });
