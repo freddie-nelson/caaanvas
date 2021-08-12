@@ -17,6 +17,10 @@ import "@fontsource/roboto-mono/600.css";
 // import tailwind
 import "./css/index.css";
 
+// setup firebase
+import setupFirebase from "@/utils/setupFirebase";
+setupFirebase();
+
 const app = createApp(App);
 
 import router from "@/router";
