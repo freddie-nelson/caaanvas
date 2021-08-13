@@ -6,6 +6,7 @@
       :placeholder="placeholder"
       :censor="censor"
       :dark="dark"
+      :error="error"
       :modelValue="modelValue"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
@@ -47,6 +48,10 @@ export default defineComponent({
     dark: {
       type: Boolean,
       default: false,
+    },
+    error: {
+      type: String,
+      default: "",
     },
   },
   setup() {

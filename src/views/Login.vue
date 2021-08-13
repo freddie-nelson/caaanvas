@@ -5,12 +5,19 @@
   <main class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col">
     <c-gradient-heading :size="6" noscale>Login</c-gradient-heading>
     <form class="max-w-xl w-full px-4 mt-6 flex flex-col" @submit.prevent="signIn">
-      <c-input-text name="email" placeholder="john@example.com" label="Email" v-model="email" />
+      <c-input-text
+        name="email"
+        placeholder="john@example.com"
+        label="Email"
+        :error="errors.email"
+        v-model="email"
+      />
       <c-input-password
         class="mt-4"
         name="password"
         label="Password"
         placeholder="securepassword123"
+        :error="errors.password"
         v-model="password"
       />
       <c-button class="w-full mt-5" type="submit">Sign In</c-button>
@@ -22,8 +29,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { validateLoginForm } from "@/utils/validateInput";
+import { defineComponent, reactive, ref } from "vue";
+import { Errors, validateLoginForm } from "@/utils/validateInput";
 
 import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
 import CInputText from "@/components/shared/Input/CInputText.vue";
@@ -47,8 +54,17 @@ export default defineComponent({
     const email = ref("");
     const password = ref("");
 
+    const errors: Errors = reactive({
+      email: "",
+      password: "",
+    });
+
     const signIn = async () => {
-      if (!validateLoginForm(email.value, password.value)) return;
+      errors.email = "";
+      errors.password = "";
+
+      const report = validateLoginForm(email.value, password.value);
+      if (!report.valid) return (errors[report.field as string] = report.msg);
 
       try {
         const credential = await signInWithEmailAndPassword(auth, email.value, password.value);
@@ -61,6 +77,8 @@ export default defineComponent({
     return {
       email,
       password,
+
+      errors,
 
       signIn,
     };

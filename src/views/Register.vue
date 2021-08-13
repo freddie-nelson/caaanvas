@@ -9,6 +9,7 @@
         name="username"
         placeholder="johnsmith17"
         label="Username"
+        :error="errors.username"
         v-model="username"
         class="mb-4"
       />
@@ -16,6 +17,7 @@
         name="email"
         placeholder="john@example.com"
         label="Email"
+        :error="errors.email"
         v-model="email"
         class="mb-4"
       />
@@ -23,6 +25,7 @@
         name="password"
         label="Password"
         placeholder="securepassword123"
+        :error="errors.password"
         v-model="password"
       />
       <c-input-text
@@ -41,14 +44,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 
 import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
 import CInputText from "@/components/shared/Input/CInputText.vue";
 import CInputPassword from "@/components/shared/Input/CInputPassword.vue";
 import CButton from "@/components/shared/Button/CButton.vue";
 import CButtonText from "@/components/shared/Button/CButtonText.vue";
-import { validateRegisterForm } from "@/utils/validateInput";
+import { Errors, validateRegisterForm } from "@/utils/validateInput";
 import { createUserWithEmailAndPassword, getAuth, updateProfile } from "@firebase/auth";
 
 export default defineComponent({
@@ -68,9 +71,24 @@ export default defineComponent({
     const password = ref("");
     const confirmPassword = ref("");
 
+    const errors: Errors = reactive({
+      username: "",
+      email: "",
+      password: "",
+    });
+
     const register = async () => {
-      if (!validateRegisterForm(username.value, email.value, password.value, confirmPassword.value))
-        return;
+      errors.username = "";
+      errors.email = "";
+      errors.password = "";
+
+      const report = validateRegisterForm(
+        username.value,
+        email.value,
+        password.value,
+        confirmPassword.value,
+      );
+      if (!report.valid) return (errors[report.field as string] = report.msg);
 
       try {
         const credential = await createUserWithEmailAndPassword(auth, email.value, password.value);
@@ -86,6 +104,8 @@ export default defineComponent({
       email,
       password,
       confirmPassword,
+
+      errors,
 
       register,
     };
