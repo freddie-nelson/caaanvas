@@ -542,6 +542,11 @@
   resolved "https://registry.yarnpkg.com/@iconify-icons/feather/-/feather-1.1.0.tgz#49fd9afb5e67873eb2ac28b67754268d75595fbe"
   integrity sha512-jBq1yuHJAdCN3CvEby6s++xy5rQFBUvRt/iIn1yFlSrFYdwwXbhsR2AGuior8Gu67x4b8X0wUQ0FSlIooOviBw==
 
+"@iconify-icons/logos@^1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@iconify-icons/logos/-/logos-1.1.10.tgz#e77c9303804e5fff4e0b5257c1ad982ca5528187"
+  integrity sha512-pS5Zt2GNoVPCL5t2Aiv2PvB6iuEoU+Z0KIByCdOeoiiGOze7M1qYNIxd/dThclqd3IGTrtIlXVbgkntBFKi9xQ==
+
 "@iconify/vue@^2.0.0-rc.3":
   version "2.0.0-rc.3"
   resolved "https://registry.yarnpkg.com/@iconify/vue/-/vue-2.0.0-rc.3.tgz#50bb3ce68bd5038bcd23fc61df31c95c623e7f94"

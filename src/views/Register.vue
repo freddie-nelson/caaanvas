@@ -35,7 +35,9 @@
         v-model="confirmPassword"
       />
 
-      <c-button class="w-full mt-7" type="submit">Create Account</c-button>
+      <c-button class="w-full mt-7 mb-5" type="submit">Create Account</c-button>
+      <c-auth-google register />
+
       <c-button-text class="self-end mt-2" @click="$router.push({ name: 'Login' })">
         Already have an account?
       </c-button-text>
@@ -45,14 +47,15 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
+import { Errors, validateRegisterForm } from "@/utils/validateInput";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "@firebase/auth";
 
 import CGradientHeading from "@/components/shared/Heading/CGradientHeading.vue";
 import CInputText from "@/components/shared/Input/CInputText.vue";
 import CInputPassword from "@/components/shared/Input/CInputPassword.vue";
 import CButton from "@/components/shared/Button/CButton.vue";
 import CButtonText from "@/components/shared/Button/CButtonText.vue";
-import { Errors, validateRegisterForm } from "@/utils/validateInput";
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from "@firebase/auth";
+import CAuthGoogle from "@/components/app/AuthButtons/CAuthGoogle.vue";
 
 export default defineComponent({
   name: "Register",
@@ -62,6 +65,7 @@ export default defineComponent({
     CInputPassword,
     CButton,
     CButtonText,
+    CAuthGoogle,
   },
   setup() {
     const auth = getAuth();
