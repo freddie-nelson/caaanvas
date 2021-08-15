@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
+import { getAuth, getRedirectResult, GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
 
 import CButton from "@/components/shared/Button/CButton.vue";
 
@@ -32,7 +32,6 @@ export default defineComponent({
 
     const signInWithGoogle = async () => {
       try {
-        // TODO fix auth/argument-error
         const credential = await signInWithPopup(auth, provider);
         console.log(credential);
       } catch (error) {
