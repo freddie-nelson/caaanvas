@@ -2,7 +2,11 @@
   <router-link class="absolute top-5 left-6 select-none" to="/">
     <c-gradient-heading :size="3" noscale>caaanvas.</c-gradient-heading>
   </router-link>
-  <main class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col">
+
+  <main
+    v-if="!isLoading"
+    class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col"
+  >
     <c-gradient-heading :size="6" noscale>Login</c-gradient-heading>
     <form class="max-w-xl w-full px-4 mt-6 flex flex-col" @submit.prevent="signIn">
       <c-input-text
@@ -21,12 +25,19 @@
         v-model="password"
       />
       <c-button class="w-full mt-5 mb-5" type="submit">Sign In</c-button>
-      <c-auth-google />
+      <c-auth-google
+        @popup="isLoading = true"
+        @auth="!$event ? (isLoading = false) : $router.push({ name: 'Dash' })"
+      />
 
       <c-button-text class="self-end mt-2" @click="$router.push({ name: 'Register' })">
         Need an account?
       </c-button-text>
     </form>
+  </main>
+
+  <main v-else class="w-full h-full bg-bg-light p-6 flex justify-center items-center flex-col">
+    <c-spinner-circle class="transform scale-50" />
   </main>
 </template>
 
@@ -41,6 +52,8 @@ import CInputPassword from "@/components/shared/Input/CInputPassword.vue";
 import CButton from "@/components/shared/Button/CButton.vue";
 import CButtonText from "@/components/shared/Button/CButtonText.vue";
 import CAuthGoogle from "@/components/app/AuthButtons/CAuthGoogle.vue";
+import CSpinnerCircle from "@/components/shared/Spinner/CSpinnerCircle.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Login",
@@ -51,8 +64,10 @@ export default defineComponent({
     CButton,
     CButtonText,
     CAuthGoogle,
+    CSpinnerCircle,
   },
   setup() {
+    const router = useRouter();
     const auth = getAuth();
 
     const email = ref("");
@@ -63,6 +78,8 @@ export default defineComponent({
       password: "",
     });
 
+    const isLoading = ref(false);
+
     const signIn = async () => {
       errors.email = "";
       errors.password = "";
@@ -70,12 +87,17 @@ export default defineComponent({
       const report = validateLoginForm(email.value, password.value);
       if (!report.valid) return (errors[report.field as string] = report.msg);
 
+      isLoading.value = true;
+
       try {
         const credential = await signInWithEmailAndPassword(auth, email.value, password.value);
         console.log(credential);
       } catch (error) {
         console.log(error);
       }
+
+      router.push({ name: "Dash" });
+      isLoading.value = false;
     };
 
     return {
@@ -84,6 +106,7 @@ export default defineComponent({
 
       errors,
 
+      isLoading,
       signIn,
     };
   },
