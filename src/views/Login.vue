@@ -43,6 +43,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 import { Errors, validateLoginForm } from "@/utils/validateInput";
 import { getAuth, signInWithEmailAndPassword } from "@firebase/auth";
 
@@ -53,7 +54,6 @@ import CButton from "@/components/shared/Button/CButton.vue";
 import CButtonText from "@/components/shared/Button/CButtonText.vue";
 import CAuthGoogle from "@/components/app/AuthButtons/CAuthGoogle.vue";
 import CSpinnerCircle from "@/components/shared/Spinner/CSpinnerCircle.vue";
-import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Login",

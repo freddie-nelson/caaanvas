@@ -87,6 +87,12 @@ module.exports = {
       width: {
         18: "4.5rem",
       },
+
+      translate: ["group-hover"],
+
+      opacity: {
+        15: "0.15",
+      },
     },
   },
   variants: {
