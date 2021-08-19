@@ -1,6 +1,15 @@
 <template>
-  <div class="canvases-list h-full mt-14">
+  <div v-if="canvases.length > 0" class="canvases-list h-full mt-14">
     <c-canvases-canvas v-for="(canvas, i) in canvases" :key="i" :canvas="canvas" />
+  </div>
+
+  <div v-else class="w-full text-center mt-14">
+    <p class="text-t-sub text-2xl font-semibold">
+      You have no canvases,
+      <router-link class="text-primary-500 hover:underline" to="/canvas">
+        try creating one!
+      </router-link>
+    </p>
   </div>
 </template>
 
