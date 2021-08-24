@@ -1,0 +1,8 @@
+web/node_modules
+web/.DS_Store
+web/dist
+web/dist-ssr
+web/*.local
+web/firebaseConfig.ts
+
+api/main

@@ -1,11 +1,17 @@
 {
   "folders": [
-	{
-		"path": "../web"
-	},
-	{
-		"path": "../api"
-	}
-],
+    {
+      "name": "caaanvas",
+      "path": ".."
+    },
+    {
+      "name": "web",
+      "path": "../web"
+    },
+    {
+      "name": "api",
+      "path": "../api"
+    }
+  ],
   "settings": {}
 }
