@@ -6,6 +6,7 @@
   <!-- force tailwind compile all text sizes -->
   <div
     class="
+      bg-gradient-to-r bg-gradient-to-l bg-gradient-to-t bg-gradient-to-b
       text-xs
       text-sm
       text-base
