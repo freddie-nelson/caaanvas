@@ -28,7 +28,7 @@ export interface Canvas {
 
 export interface Tool {
   name: string;
-  icon?: IconifyIconData;
+  icon: IconifyIconData;
 }
 
 export interface Zoom {
@@ -52,7 +52,7 @@ const store = createStore<State>({
   state: {
     toastQueue: [],
     canvas: {
-      selectedTool: { name: "" },
+      selectedTool: { name: "", icon: textIcon },
       tools: [
         { name: "text", icon: textIcon },
         { name: "link", icon: linkIcon },
